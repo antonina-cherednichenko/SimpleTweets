@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instant-run
+    abi="arm64-v8a,armeabi-v7a,armeabi"
+    api-level="24"
+    density="420dpi"
+    format="8"
+    plugin-version="2.2.3"
+    timestamp="283920019109322"
+    token="8042757535869343686" >
+
+    <task
+        name="javac"
+        duration="0" />
+    <task
+        name="instant-run-dex"
+        duration="0" />
+    <task
+        name="instant-run-transform"
+        duration="0" />
+    <task
+        name="verifier"
+        duration="0" />
+
+    <build
+        timestamp="283789001248237"
+        verifier="FULL_BUILD_REQUESTED" >
+        <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/outputs/apk/app-debug.apk"
+            type="MAIN" />
+    </build>
+    <build
+        timestamp="283851703914407"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
+            type="RESOURCES" />
+    </build>
+    <build timestamp="283920019109322" />
+
+</instant-run>
