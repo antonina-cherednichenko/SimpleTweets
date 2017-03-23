@@ -3,7 +3,6 @@ package com.codepath.apps.simpletweets.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,10 @@ import android.widget.TextView;
 
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.models.Tweet;
+import com.codepath.apps.simpletweets.utils.TimestampUtils;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,27 +47,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         holder.tvUserName.setText(tweet.getUser().getName());
         holder.tvUserScreenName.setText(String.format("@%s", tweet.getUser().getScreenName()));
         holder.tvBody.setText(tweet.getBody());
-        holder.tvTimestamp.setText(getRelativeTimeAgo(tweet.getCreateAt()));
+        holder.tvTimestamp.setText(TimestampUtils.getRelativeTimeAgo(tweet.getCreateAt()));
 
         Picasso.with(context).load(tweet.getUser().getProfileUrl()).into(holder.ivProfileImage);
-    }
-
-    // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
-    public String getRelativeTimeAgo(String rawJsonDate) {
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
-
-        String relativeDate = "";
-        try {
-            long dateMillis = sf.parse(rawJsonDate).getTime();
-            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return relativeDate;
     }
 
 

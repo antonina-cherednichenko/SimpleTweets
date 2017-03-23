@@ -5,22 +5,22 @@
     density="420dpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="326867165690986"
+    timestamp="327076570089896"
     token="8042757535869343686"
-    verifier="COLD_SWAP_REQUESTED" >
+    verifier="CLASS_ADDED" >
 
     <task
         name="javac"
-        duration="969" />
+        duration="835" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="75" />
+        duration="29" />
     <task
         name="verifier"
-        duration="2" />
+        duration="3" />
 
     <artifact
         location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_5/classes.dex"
@@ -29,7 +29,7 @@
         location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_9/classes.dex"
         type="DEX" />
     <artifact
-        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_0/classes.dex"
         type="DEX" />
 
     <build
@@ -45,9 +45,6 @@
         <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_4/classes.dex"
             type="DEX" />
-        <artifact
-            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_0/classes.dex"
-            type="DEX" />
     </build>
     <build
         timestamp="325685319403157"
@@ -60,13 +57,20 @@
         timestamp="326867165690986"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+            type="DEX" />
+    </build>
+    <build
+        timestamp="327076570089896"
+        verifier="CLASS_ADDED" >
+        <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_5/classes.dex"
             type="DEX" />
         <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_9/classes.dex"
             type="DEX" />
         <artifact
-            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_0/classes.dex"
             type="DEX" />
     </build>
 
