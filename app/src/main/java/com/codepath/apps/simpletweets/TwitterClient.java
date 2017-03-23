@@ -24,8 +24,8 @@ import org.scribe.builder.api.TwitterApi;
 public class TwitterClient extends OAuthBaseClient {
     public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class;
     public static final String REST_URL = "https://api.twitter.com/1.1/";
-    public static final String REST_CONSUMER_KEY = "A8YmLsrMet9XrnMrWPNWRPb6U";
-    public static final String REST_CONSUMER_SECRET = "a21HKZHwRu2nfdtK0jhloCQQgKAXCY3DYA0VuLF2aVbBS1ZDqX";
+    public static final String REST_CONSUMER_KEY = "M8iC8878hUyAJH51QsaA08gb9";
+    public static final String REST_CONSUMER_SECRET = "fR90py3bnalQWiMkjXaQkG4MI4kfc1vz3gaeLuTSztgj9wg3vQ";
     public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
     public static final int TWEETS_COUNT = 25;
@@ -36,13 +36,16 @@ public class TwitterClient extends OAuthBaseClient {
 
 
     //HomeTimeline - Gets the home timeline
-    public void getHomeTimeline(long maxId, long sinceId, AsyncHttpResponseHandler handler) {
+    public void getHomeTimeline(Long maxId, Long sinceId, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         //Specify the parameters
         RequestParams params = new RequestParams();
         params.put("count", TWEETS_COUNT);
-        params.put("since_id", sinceId);
-        if (maxId > 1) {
+        if (sinceId != null) {
+            params.put("since_id", sinceId);
+        }
+
+        if (maxId != null) {
             params.put("max_id", maxId);
         }
         //Execute the request

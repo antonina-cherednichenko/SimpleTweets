@@ -16,12 +16,16 @@
         "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/notification_icon_background.xml"
     },
     {
+        "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_text_cursor_material.xml",
+        "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/abc_text_cursor_material.xml"
+    },
+    {
         "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_holo_light.xml",
         "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/abc_list_selector_holo_light.xml"
     },
     {
-        "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_text_cursor_material.xml",
-        "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/abc_text_cursor_material.xml"
+        "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/design_password_eye.xml",
+        "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/drawable/design_password_eye.xml"
     },
     {
         "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_light.xml",
@@ -34,6 +38,10 @@
     {
         "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_tab_indicator_material.xml",
         "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/abc_tab_indicator_material.xml"
+    },
+    {
+        "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/design_bottom_navigation_item_background.xml",
+        "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/drawable/design_bottom_navigation_item_background.xml"
     },
     {
         "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_ic_search_api_material.xml",
@@ -88,6 +96,14 @@
         "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/abc_seekbar_track_material.xml"
     },
     {
+        "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/design_snackbar_background.xml",
+        "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/drawable/design_snackbar_background.xml"
+    },
+    {
+        "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/navigation_empty_icon.xml",
+        "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/drawable/navigation_empty_icon.xml"
+    },
+    {
         "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_seekbar_thumb_material.xml",
         "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/abc_seekbar_thumb_material.xml"
     },
@@ -110,6 +126,10 @@
     {
         "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_dark.xml",
         "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/design_fab_background.xml",
+        "source": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/drawable/design_fab_background.xml"
     },
     {
         "merged": "/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/merged/debug/drawable/abc_ic_ab_back_material.xml",

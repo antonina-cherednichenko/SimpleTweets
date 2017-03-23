@@ -39,7 +39,8 @@
         </activity>
         <activity
             android:name="com.codepath.apps.simpletweets.TimelineActivity"
-            android:label="@string/timeline_name" />
+            android:label="@string/timeline_name"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

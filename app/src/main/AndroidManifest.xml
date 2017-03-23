@@ -33,7 +33,10 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
-        <activity android:name=".TimelineActivity"  android:label="@string/timeline_name"></activity>
+        <activity
+            android:name=".TimelineActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/timeline_name"></activity>
     </application>
 
 </manifest>

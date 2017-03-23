@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:2:1-39:12
+ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:2:1-42:12
 	package
 		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:3:5-45
 		INJECTED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml
@@ -24,18 +24,21 @@ ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidM
 	android:name
 		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:8:22-78
 application
-ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:10:5-37:19
+ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:10:5-40:19
+MERGED from [com.android.support:design:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:appcompat-v7:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.2.0/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-vector-drawable:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.2.0/AndroidManifest.xml:23:5-20
+MERGED from [com.android.support:transition:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/transition/25.2.0/AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-fragment:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-media-compat:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-core-utils:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.2.0/AndroidManifest.xml:25:5-20
-MERGED from [com.android.support:animated-vector-drawable:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.2.0/AndroidManifest.xml:22:5-20
-MERGED from [com.android.support:support-vector-drawable:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.2.0/AndroidManifest.xml:23:5-20
 MERGED from [com.github.Raizlabs.DBFlow:dbflow:4.0.0-beta5] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.github.Raizlabs.DBFlow/dbflow/4.0.0-beta5/AndroidManifest.xml:11:5-20
 MERGED from [com.android.support:support-core-ui:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-compat:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:cardview-v7:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.2.0/AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.stetho:stetho:1.4.1] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.facebook.stetho/stetho/1.4.1/AndroidManifest.xml:11:5-20
 	android:label
 		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:14:9-41
 	android:allowBackup
@@ -85,29 +88,34 @@ ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidM
 	android:scheme
 		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:33:21-43
 activity#com.codepath.apps.simpletweets.TimelineActivity
-ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:36:9-102
+ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:36:9-39:62
 	android:label
-		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:36:53-90
+		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:39:13-50
+	android:theme
+		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:38:13-56
 	android:name
-		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:36:19-51
+		ADDED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml:37:13-45
 uses-sdk
 INJECTED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.codepath.libraries:android-oauth-handler:1.1.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.codepath.libraries/android-oauth-handler/1.1.0/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:design:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/AndroidManifest.xml:21:5-23:62
 MERGED from [com.android.support:appcompat-v7:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:animated-vector-drawable:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.2.0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.2.0/AndroidManifest.xml:21:5-43
+MERGED from [com.android.support:transition:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/transition/25.2.0/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-v4:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.2.0/AndroidManifest.xml:21:5-23:54
 MERGED from [com.android.support:support-fragment:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.2.0/AndroidManifest.xml:21:5-23:60
 MERGED from [com.android.support:support-media-compat:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.2.0/AndroidManifest.xml:21:5-23:63
 MERGED from [com.android.support:support-core-utils:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.2.0/AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:animated-vector-drawable:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.2.0/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.2.0/AndroidManifest.xml:21:5-43
 MERGED from [com.github.Raizlabs.DBFlow:dbflow:4.0.0-beta5] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.github.Raizlabs.DBFlow/dbflow/4.0.0-beta5/AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:recyclerview-v7:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.2.0/AndroidManifest.xml:20:5-43
 MERGED from [com.android.support:support-core-ui:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.2.0/AndroidManifest.xml:21:5-23:58
 MERGED from [com.jakewharton:butterknife:8.5.1] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.jakewharton/butterknife/8.5.1/AndroidManifest.xml:5:5-43
 MERGED from [com.android.support:support-compat:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.2.0/AndroidManifest.xml:21:5-23:58
 MERGED from [com.android.support:cardview-v7:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.2.0/AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.stetho:stetho:1.4.1] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.facebook.stetho/stetho/1.4.1/AndroidManifest.xml:7:5-9:41
 	tools:overrideLibrary
-		ADDED from [com.android.support:appcompat-v7:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/AndroidManifest.xml:23:9-75
+		ADDED from [com.android.support:design:25.2.0] /Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
 		INJECTED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/tonya/android-projects/Twitter_app_Week3/app/src/main/AndroidManifest.xml
