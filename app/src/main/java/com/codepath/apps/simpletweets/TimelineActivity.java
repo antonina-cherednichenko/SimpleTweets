@@ -2,8 +2,9 @@ package com.codepath.apps.simpletweets;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.codepath.apps.simpletweets.adapters.TweetAdapter;
 import com.codepath.apps.simpletweets.models.Tweet;
@@ -15,6 +16,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
@@ -22,17 +25,23 @@ public class TimelineActivity extends AppCompatActivity {
     private TwitterClient client;
     private TweetAdapter adapter;
     private List<Tweet> tweets;
-    private ListView lvTweets;
+
+    @BindView(R.id.rvTweets)
+    RecyclerView rvTweets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+        ButterKnife.bind(this);
 
-        lvTweets = (ListView) findViewById(R.id.lvTweets);
         tweets = new ArrayList<>();
         adapter = new TweetAdapter(this, tweets);
-        lvTweets.setAdapter(adapter);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rvTweets.setLayoutManager(llm);
+        rvTweets.setAdapter(adapter);
 
         client = TwitterApplication.getRestClient(); //singleton client
         populateTimeline();

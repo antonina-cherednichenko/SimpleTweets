@@ -2,11 +2,10 @@ package com.codepath.apps.simpletweets.adapters;
 
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,36 +15,54 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class TweetAdapter extends ArrayAdapter<Tweet> {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    List<Tweet> tweets;
+public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHolder> {
+
+    private List<Tweet> tweets;
+    private Context context;
 
     public TweetAdapter(Context context, List<Tweet> tweets) {
-        super(context, R.layout.item_tweet, tweets);
         this.tweets = tweets;
-
+        this.context = context;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Tweet tweet = getItem(position);
+    public int getItemCount() {
+        return tweets.size();
+    }
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
+    @Override
+    public TweetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View tweetView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tweet, parent, false);
+        return new TweetViewHolder(tweetView);
+    }
+
+    @Override
+    public void onBindViewHolder(TweetViewHolder holder, int position) {
+        Tweet tweet = tweets.get(position);
+
+        holder.tvUserName.setText(tweet.getUser().getScreenName());
+        holder.tvBody.setText(tweet.getBody());
+
+        Picasso.with(context).load(tweet.getUser().getProfileUrl()).into(holder.ivProfileImage);
+    }
+
+
+    public class TweetViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.ivProfileImage)
+        ImageView ivProfileImage;
+        @BindView(R.id.tvUserName)
+        TextView tvUserName;
+        @BindView(R.id.tvBody)
+        TextView tvBody;
+
+        public TweetViewHolder(View itemView) {
+            super(itemView);
+
+            ButterKnife.bind(this, itemView);
         }
-
-        ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
-        TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
-        TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
-
-        tvUserName.setText(tweet.getUser().getScreenName());
-        tvBody.setText(tweet.getBody());
-
-        ivProfileImage.setImageResource(android.R.color.transparent);
-
-        Picasso.with(getContext()).load(tweet.getUser().getProfileUrl()).into(ivProfileImage);
-
-        return convertView;
     }
 }

@@ -5,36 +5,59 @@
     density="420dpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="283920019109322"
-    token="8042757535869343686" >
+    timestamp="321342018691763"
+    token="8042757535869343686"
+    verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="1180" />
     <task
         name="instant-run-dex"
-        duration="0" />
+        duration="558" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="127" />
     <task
         name="verifier"
-        duration="0" />
+        duration="13" />
+
+    <artifact
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
+        type="RESOURCES" />
+    <artifact
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/reload-dex/debug/classes.dex"
+        type="RELOAD_DEX" />
 
     <build
-        timestamp="283789001248237"
+        timestamp="311415852921675"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/outputs/apk/app-debug.apk"
             type="MAIN" />
     </build>
     <build
-        timestamp="283851703914407"
+        timestamp="321195394753713"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_9/classes.dex"
+            type="DEX" />
+        <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_0/classes.dex"
+            type="DEX" />
+        <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+            type="DEX" />
+    </build>
+    <build
+        timestamp="321342018691763"
         verifier="COMPATIBLE" >
         <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
             type="RESOURCES" />
+        <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/reload-dex/debug/classes.dex"
+            type="RELOAD_DEX" />
     </build>
-    <build timestamp="283920019109322" />
 
 </instant-run>
