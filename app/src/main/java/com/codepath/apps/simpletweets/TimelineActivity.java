@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.codepath.apps.simpletweets.adapters.TweetAdapter;
 import com.codepath.apps.simpletweets.models.Tweet;
+import com.codepath.apps.simpletweets.utils.EndlessRecyclerViewScrollListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -25,6 +26,10 @@ public class TimelineActivity extends AppCompatActivity {
     private TwitterClient client;
     private TweetAdapter adapter;
     private List<Tweet> tweets;
+    private long maxId = 1;
+
+    // Store a member variable for the listener
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @BindView(R.id.rvTweets)
     RecyclerView rvTweets;
@@ -42,6 +47,17 @@ public class TimelineActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rvTweets.setLayoutManager(llm);
         rvTweets.setAdapter(adapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(llm) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                // Create the Handler object (on the main thread by default)
+                populateTimeline();
+
+            }
+        };
+        rvTweets.addOnScrollListener(scrollListener);
 
         client = TwitterApplication.getRestClient(); //singleton client
         populateTimeline();
@@ -49,11 +65,13 @@ public class TimelineActivity extends AppCompatActivity {
 
     //Send an API request to get the timeline Json
     private void populateTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+        client.getHomeTimeline(maxId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d("DEBUG", response.toString());
-                tweets.addAll(Tweet.fromJSONArray(response));
+                List<Tweet> newRes = Tweet.fromJSONArray(response);
+                maxId = newRes.get(newRes.size() - 1).getUid() - 1;
+                tweets.addAll(newRes);
                 adapter.notifyDataSetChanged();
             }
 

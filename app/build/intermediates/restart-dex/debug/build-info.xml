@@ -5,21 +5,32 @@
     density="420dpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="325711872490616"
-    token="8042757535869343686" >
+    timestamp="326867165690986"
+    token="8042757535869343686"
+    verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="969" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="75" />
     <task
         name="verifier"
-        duration="0" />
+        duration="2" />
+
+    <artifact
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_5/classes.dex"
+        type="DEX" />
+    <artifact
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_9/classes.dex"
+        type="DEX" />
+    <artifact
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+        type="DEX" />
 
     <build
         timestamp="321756327232488"
@@ -44,6 +55,13 @@
         <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
             type="RESOURCES" />
+    </build>
+    <build
+        timestamp="326867165690986"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_5/classes.dex"
+            type="DEX" />
         <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_9/classes.dex"
             type="DEX" />
@@ -51,6 +69,5 @@
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
             type="DEX" />
     </build>
-    <build timestamp="325711872490616" />
 
 </instant-run>
