@@ -567,7 +567,6 @@ int id action_mode_close_button 0x7f0a0027
 int id action_text 0x7f0a0060
 int id actions 0x7f0a006e
 int id activity_chooser_view_content 0x7f0a0028
-int id activity_timeline 0x7f0a0057
 int id add 0x7f0a0014
 int id alertTitle 0x7f0a003c
 int id always 0x7f0a001e
@@ -645,6 +644,7 @@ int id src_over 0x7f0a0019
 int id status_bar_latest_event_content 0x7f0a0063
 int id submenuarrow 0x7f0a0042
 int id submit_area 0x7f0a0053
+int id swipeContainer 0x7f0a0057
 int id tabMode 0x7f0a000c
 int id text 0x7f0a0073
 int id text2 0x7f0a0071

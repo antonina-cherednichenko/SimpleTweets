@@ -2007,7 +2007,6 @@ containing a value of this type.
         public static final int action_text=0x7f0a0060;
         public static final int actions=0x7f0a006e;
         public static final int activity_chooser_view_content=0x7f0a0028;
-        public static final int activity_timeline=0x7f0a0057;
         public static final int add=0x7f0a0014;
         public static final int alertTitle=0x7f0a003c;
         public static final int always=0x7f0a001e;
@@ -2085,6 +2084,7 @@ containing a value of this type.
         public static final int status_bar_latest_event_content=0x7f0a0063;
         public static final int submenuarrow=0x7f0a0042;
         public static final int submit_area=0x7f0a0053;
+        public static final int swipeContainer=0x7f0a0057;
         public static final int tabMode=0x7f0a000c;
         public static final int text=0x7f0a0073;
         public static final int text2=0x7f0a0071;

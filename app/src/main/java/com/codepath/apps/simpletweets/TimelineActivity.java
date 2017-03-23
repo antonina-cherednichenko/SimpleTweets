@@ -1,6 +1,7 @@
 package com.codepath.apps.simpletweets;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +28,14 @@ public class TimelineActivity extends AppCompatActivity {
     private TweetAdapter adapter;
     private List<Tweet> tweets;
     private long maxId = 1;
+    private long sinceId = 1;
 
     // Store a member variable for the listener
     private EndlessRecyclerViewScrollListener scrollListener;
+
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeContainer;
+
 
     @BindView(R.id.rvTweets)
     RecyclerView rvTweets;
@@ -59,20 +65,43 @@ public class TimelineActivity extends AppCompatActivity {
         };
         rvTweets.addOnScrollListener(scrollListener);
 
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                populateTimeline();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
         client = TwitterApplication.getRestClient(); //singleton client
         populateTimeline();
     }
 
     //Send an API request to get the timeline Json
     private void populateTimeline() {
-        client.getHomeTimeline(maxId, new JsonHttpResponseHandler() {
+        client.getHomeTimeline(maxId, sinceId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d("DEBUG", response.toString());
                 List<Tweet> newRes = Tweet.fromJSONArray(response);
-                maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                tweets.addAll(newRes);
-                adapter.notifyDataSetChanged();
+                if (!newRes.isEmpty()) {
+                    maxId = newRes.get(newRes.size() - 1).getUid() - 1;
+                    sinceId = newRes.get(0).getUid();
+                    tweets.addAll(newRes);
+                    adapter.notifyDataSetChanged();
+                }
+
+                swipeContainer.setRefreshing(false);
+
             }
 
             @Override
