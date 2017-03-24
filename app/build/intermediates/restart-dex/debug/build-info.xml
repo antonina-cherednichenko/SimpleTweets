@@ -5,50 +5,58 @@
     density="420dpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="352406443717638"
+    timestamp="368508012037672"
     token="8042757535869343686"
-    verifier="COMPATIBLE" >
+    verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="1982" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="165" />
     <task
         name="verifier"
-        duration="0" />
+        duration="7" />
 
     <artifact
-        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
-        type="RESOURCES" />
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_0/classes.dex"
+        type="DEX" />
+    <artifact
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/10/parceler-api-1.1.6_888f7b22ce6726fa8020b3fc5e92df356982d92c/classes.dex"
+        type="DEX" />
+    <artifact
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
+        type="DEX" />
+    <artifact
+        location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_9/classes.dex"
+        type="DEX" />
 
     <build
-        timestamp="352075143588852"
-        verifier="MANIFEST_FILE_CHANGE" >
+        timestamp="364829934671316"
+        verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/outputs/apk/app-debug.apk"
             type="MAIN" />
     </build>
     <build
-        timestamp="352317800672230"
-        verifier="FIELD_TYPE_CHANGE" >
+        timestamp="368508012037672"
+        verifier="COLD_SWAP_REQUESTED" >
         <artifact
-            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_9/classes.dex"
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_0/classes.dex"
+            type="DEX" />
+        <artifact
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/10/parceler-api-1.1.6_888f7b22ce6726fa8020b3fc5e92df356982d92c/classes.dex"
             type="DEX" />
         <artifact
             location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
             type="DEX" />
-    </build>
-    <build
-        timestamp="352406443717638"
-        verifier="COMPATIBLE" >
         <artifact
-            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
-            type="RESOURCES" />
+            location="/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_9/classes.dex"
+            type="DEX" />
     </build>
 
 </instant-run>

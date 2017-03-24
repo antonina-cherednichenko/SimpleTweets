@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="@dimen/profile_image_size"
+        android:layout_height="@dimen/profile_image_size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/simple_margin" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/ivProfileImage"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/simple_margin" />
+
+    <TextView
+        android:id="@+id/tvScreeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/ivProfileImage"
+        android:layout_below="@id/tvName"
+        android:layout_margin="@dimen/simple_margin" />
+
+
+    <EditText
+        android:id="@+id/etBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivProfileImage"
+        android:layout_marginLeft="@dimen/simple_margin"
+        android:layout_marginRight="@dimen/simple_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:hint="@string/what_is_happening" />
+
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etBody"
+        android:text="Send" />
+
+</RelativeLayout>
