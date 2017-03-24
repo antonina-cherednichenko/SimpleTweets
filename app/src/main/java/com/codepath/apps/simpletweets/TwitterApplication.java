@@ -39,13 +39,14 @@ public class TwitterApplication extends Application {
         FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
 
         TwitterApplication.context = this;
+
     }
 
     public static TwitterClient getRestClient() {
         return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TwitterApplication.context);
     }
 
-    public static User getAccountUser() {
+    public static void setAccountUser() {
 
         //Set accountUser if it hasn't been set yet
         if (accountUser == null) {
@@ -68,7 +69,9 @@ public class TwitterApplication extends Application {
 
         }
 
-        return accountUser;
+    }
 
+    public static User getAccountUser() {
+        return accountUser;
     }
 }

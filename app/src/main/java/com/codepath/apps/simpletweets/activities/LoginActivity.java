@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.View;
 
 import com.codepath.apps.simpletweets.R;
+import com.codepath.apps.simpletweets.TwitterApplication;
 import com.codepath.apps.simpletweets.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
@@ -29,8 +30,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
     // i.e Display application "homepage"
     @Override
     public void onLoginSuccess() {
+        //set accountUser
+        TwitterApplication.setAccountUser();
+
         Intent i = new Intent(this, TimelineActivity.class);
         startActivity(i);
+
 //        Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show();
     }
 

@@ -5,6 +5,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="simple_margin">5dp</dimen>
+    <dimen name="min_margin">2dp</dimen>
     <dimen name="profile_image_size">48dp</dimen>
 
     <dimen name="simple_radius">6dp</dimen>

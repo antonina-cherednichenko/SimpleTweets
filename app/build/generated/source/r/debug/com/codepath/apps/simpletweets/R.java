@@ -2641,24 +2641,25 @@ containing a value of this type.
         public static final int item_touch_helper_max_drag_scroll_per_frame=0x7f070082;
         public static final int item_touch_helper_swipe_escape_max_velocity=0x7f070083;
         public static final int item_touch_helper_swipe_escape_velocity=0x7f070084;
-        public static final int notification_action_icon_size=0x7f070085;
-        public static final int notification_action_text_size=0x7f070086;
-        public static final int notification_big_circle_margin=0x7f070087;
+        public static final int min_margin=0x7f070085;
+        public static final int notification_action_icon_size=0x7f070086;
+        public static final int notification_action_text_size=0x7f070087;
+        public static final int notification_big_circle_margin=0x7f070088;
         public static final int notification_content_margin_start=0x7f07001b;
-        public static final int notification_large_icon_height=0x7f070088;
-        public static final int notification_large_icon_width=0x7f070089;
+        public static final int notification_large_icon_height=0x7f070089;
+        public static final int notification_large_icon_width=0x7f07008a;
         public static final int notification_main_column_padding_top=0x7f07001c;
         public static final int notification_media_narrow_margin=0x7f07001d;
-        public static final int notification_right_icon_size=0x7f07008a;
+        public static final int notification_right_icon_size=0x7f07008b;
         public static final int notification_right_side_padding_top=0x7f070019;
-        public static final int notification_small_icon_background_padding=0x7f07008b;
-        public static final int notification_small_icon_size_as_large=0x7f07008c;
-        public static final int notification_subtext_size=0x7f07008d;
-        public static final int notification_top_pad=0x7f07008e;
-        public static final int notification_top_pad_large_text=0x7f07008f;
-        public static final int profile_image_size=0x7f070090;
-        public static final int simple_margin=0x7f070091;
-        public static final int simple_radius=0x7f070092;
+        public static final int notification_small_icon_background_padding=0x7f07008c;
+        public static final int notification_small_icon_size_as_large=0x7f07008d;
+        public static final int notification_subtext_size=0x7f07008e;
+        public static final int notification_top_pad=0x7f07008f;
+        public static final int notification_top_pad_large_text=0x7f070090;
+        public static final int profile_image_size=0x7f070091;
+        public static final int simple_margin=0x7f070092;
+        public static final int simple_radius=0x7f070093;
     }
     public static final class drawable {
         public static final int abc_ab_share_pack_mtrl_alpha=0x7f020000;
@@ -3077,8 +3078,15 @@ containing a value of this type.
         public static final int Animation_AppCompat_DropDownUp=0x7f0800a6;
         public static final int Animation_Design_BottomSheetDialog=0x7f0800a7;
         /**  API 14 theme customizations can go here. 
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
          */
         public static final int AppBaseTheme=0x7f080028;
+        /**  All customizations that are NOT specific to a particular API-level can go here. 
+         */
         public static final int AppTheme=0x7f0800a8;
         public static final int AppTheme_NoActionBar=0x7f0800a9;
         public static final int Base_AlertDialog_AppCompat=0x7f0800aa;

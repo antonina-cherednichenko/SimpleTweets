@@ -4,6 +4,7 @@ package com.codepath.apps.simpletweets.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.simpletweets.R;
+import com.codepath.apps.simpletweets.TwitterApplication;
+import com.codepath.apps.simpletweets.models.User;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +44,6 @@ public class AddNewTweetDialog extends DialogFragment {
     }
 
     public static AddNewTweetDialog newInstance() {
-
         AddNewTweetDialog dialog = new AddNewTweetDialog();
         return dialog;
     }
@@ -59,6 +62,18 @@ public class AddNewTweetDialog extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        User accountUser = TwitterApplication.getAccountUser();
+
+        if (accountUser == null) {
+            Log.d("ERROR", "Account user is not set");
+            return;
+        }
+
+        tvName.setText(accountUser.getName());
+        tvScreenName.setText(String.format("@%s", accountUser.getScreenName()));
+        Picasso.with(getContext()).load(accountUser.getProfileUrl()).into(ivProfile);
+
     }
 
 
