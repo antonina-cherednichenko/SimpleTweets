@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements AddNewTweetDialog.AddTweetListener {
 
     private enum WorkMode {
         SCROLL,
@@ -135,7 +135,11 @@ public class TimelineActivity extends AppCompatActivity {
 
 
         populateTimeline(WorkMode.INIT);
+    }
 
+
+    @Override
+    public void addTweet(String tweetBody) {
 
     }
 
