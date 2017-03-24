@@ -986,10 +986,11 @@ int string path_password_eye 0x7f060027
 int string path_password_eye_mask_strike_through 0x7f060028
 int string path_password_eye_mask_visible 0x7f060029
 int string path_password_strike_through 0x7f06002a
+int string post_tweet 0x7f06002b
 int string search_menu_title 0x7f060013
 int string status_bar_notification_info_overflow 0x7f060014
-int string timeline_name 0x7f06002b
-int string what_is_happening 0x7f06002c
+int string timeline_name 0x7f06002c
+int string what_is_happening 0x7f06002d
 int style AlertDialog_AppCompat 0x7f0800a3
 int style AlertDialog_AppCompat_Light 0x7f0800a4
 int style Animation_AppCompat_Dialog 0x7f0800a5

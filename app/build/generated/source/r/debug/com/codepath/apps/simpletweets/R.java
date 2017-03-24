@@ -3066,10 +3066,11 @@ containing a value of this type.
         public static final int path_password_eye_mask_strike_through=0x7f060028;
         public static final int path_password_eye_mask_visible=0x7f060029;
         public static final int path_password_strike_through=0x7f06002a;
+        public static final int post_tweet=0x7f06002b;
         public static final int search_menu_title=0x7f060013;
         public static final int status_bar_notification_info_overflow=0x7f060014;
-        public static final int timeline_name=0x7f06002b;
-        public static final int what_is_happening=0x7f06002c;
+        public static final int timeline_name=0x7f06002c;
+        public static final int what_is_happening=0x7f06002d;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f0800a3;
@@ -3078,15 +3079,8 @@ containing a value of this type.
         public static final int Animation_AppCompat_DropDownUp=0x7f0800a6;
         public static final int Animation_Design_BottomSheetDialog=0x7f0800a7;
         /**  API 14 theme customizations can go here. 
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        
          */
         public static final int AppBaseTheme=0x7f080028;
-        /**  All customizations that are NOT specific to a particular API-level can go here. 
-         */
         public static final int AppTheme=0x7f0800a8;
         public static final int AppTheme_NoActionBar=0x7f0800a9;
         public static final int Base_AlertDialog_AppCompat=0x7f0800aa;

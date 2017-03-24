@@ -17,7 +17,6 @@ import com.codepath.apps.simpletweets.TwitterClient;
 import com.codepath.apps.simpletweets.adapters.TweetAdapter;
 import com.codepath.apps.simpletweets.fragments.AddNewTweetDialog;
 import com.codepath.apps.simpletweets.models.Tweet;
-import com.codepath.apps.simpletweets.models.User;
 import com.codepath.apps.simpletweets.utils.EndlessRecyclerViewScrollListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -47,8 +46,6 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
     // Store a member variable for the listener
     private EndlessRecyclerViewScrollListener scrollListener;
-
-    private User currentUser;
 
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
@@ -108,22 +105,6 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
         client = TwitterApplication.getRestClient(); //singleton client
 
-
-        // Set User object
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-
-            }
-        });
-
-
         fabAddTweet.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +121,19 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
     @Override
     public void addTweet(String tweetBody) {
+        client.addNewTweet(tweetBody, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Tweet newTweet = Tweet.fromJSON(response);
+                tweets.add(0, newTweet);
+                adapter.notifyItemInserted(0);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("ERROR", errorResponse.toString());
+            }
+        });
     }
 
     private void setupToolbar() {

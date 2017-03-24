@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Mar 24 11:32:49 PDT 2017
+#Fri Mar 24 12:05:45 PDT 2017
 210.set=ANDROID_RESOURCE
 282.file=/Users/tonya/android-projects/Twitter_app_Week3/app/build/intermediates/res/resources-debug.ap_/res/drawable/abc_spinner_textfield_background_material.xml
 14.set=ANDROID_RESOURCE
