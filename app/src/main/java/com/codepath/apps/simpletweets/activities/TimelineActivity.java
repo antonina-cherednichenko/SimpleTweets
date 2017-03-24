@@ -125,8 +125,11 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Tweet newTweet = Tweet.fromJSON(response);
-                tweets.add(0, newTweet);
-                adapter.notifyItemInserted(0);
+
+                if (!tweets.contains(newTweet)) {
+                    tweets.add(0, newTweet);
+                    adapter.notifyItemInserted(0);
+                }
             }
 
             @Override
@@ -163,14 +166,14 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
                 if (!newRes.isEmpty()) {
                     if (mode == WorkMode.REFRESH) {
                         sinceId = newRes.get(0).getUid();
-                        tweets.addAll(0, newRes);
+                        tweets.addAll(0, Tweet.getUniqueTweets(tweets, newRes));
                     } else if (mode == WorkMode.SCROLL) {
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        tweets.addAll(newRes);
+                        tweets.addAll(Tweet.getUniqueTweets(tweets, newRes));
                     } else {
                         sinceId = newRes.get(0).getUid();
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        tweets.addAll(newRes);
+                        tweets.addAll(Tweet.getUniqueTweets(tweets, newRes));
                     }
 
                     adapter.notifyDataSetChanged();
@@ -181,8 +184,11 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("DEBUG", errorResponse.toString());
+                swipeContainer.setRefreshing(false);
 
             }
         });
     }
+
+
 }

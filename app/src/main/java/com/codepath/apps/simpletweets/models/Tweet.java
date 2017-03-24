@@ -63,6 +63,17 @@ public class Tweet {
         return tweets;
     }
 
+    public static List<Tweet> getUniqueTweets(List<Tweet> oldTweets, List<Tweet> newTweets) {
+
+        List<Tweet> res = new ArrayList<>();
+        for (Tweet tweet : newTweets) {
+            if (!oldTweets.contains(tweet)) {
+                res.add(tweet);
+            }
+        }
+        return res;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
