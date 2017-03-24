@@ -1,5 +1,12 @@
 package com.codepath.apps.simpletweets.models;
 
+import com.codepath.apps.simpletweets.db.TwitterDatabase;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,13 +15,23 @@ import org.parceler.Parcel;
 import java.util.ArrayList;
 import java.util.List;
 
-@Parcel
-public class Tweet {
+@Table(database = TwitterDatabase.class)
+@Parcel(analyze = {Tweet.class})
+public class Tweet extends BaseModel {
 
-    private String body;
-    private long uid;
-    private User user;
-    private String createAt;
+    @Column
+    @PrimaryKey
+    long uid;
+
+    @Column
+    String body;
+
+    @Column
+    @ForeignKey(saveForeignKeyModel = true)
+    User user;
+
+    @Column
+    String createAt;
 
     public String getBody() {
         return body;

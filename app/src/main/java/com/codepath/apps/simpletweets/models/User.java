@@ -1,16 +1,31 @@
 package com.codepath.apps.simpletweets.models;
 
 
+import com.codepath.apps.simpletweets.db.TwitterDatabase;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
-@Parcel
-public class User {
-    private String name;
-    private long uid;
-    private String screenName;
-    private String profileUrl;
+@Table(database = TwitterDatabase.class)
+@Parcel(analyze = {User.class})
+public class User extends BaseModel {
+    @Column
+    @PrimaryKey
+    long uid;
+
+    @Column
+    String name;
+
+    @Column
+    String screenName;
+
+    @Column
+    String profileUrl;
 
     public String getName() {
         return name;

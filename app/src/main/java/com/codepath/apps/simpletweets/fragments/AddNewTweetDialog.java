@@ -78,16 +78,11 @@ public class AddNewTweetDialog extends DialogFragment {
         tvScreenName.setText(String.format("@%s", accountUser.getScreenName()));
         Picasso.with(getContext()).load(accountUser.getProfileUrl()).into(ivProfile);
 
-        btnAdd.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnAdd.setOnClickListener(v -> {
 
-                AddTweetListener listener = (AddTweetListener) getActivity();
-                listener.addTweet(tvBody.getText().toString());
-                dismiss();
-
-
-            }
+            AddTweetListener listener = (AddTweetListener) getActivity();
+            listener.addTweet(tvBody.getText().toString());
+            dismiss();
         });
 
     }

@@ -1,6 +1,6 @@
 package com.codepath.apps.simpletweets.models;
 
-import com.codepath.apps.simpletweets.MyDatabase;
+import com.codepath.apps.simpletweets.db.TwitterDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -20,52 +20,52 @@ import java.util.List;
  * Note: All models **must extend from** `BaseModel` as shown below.
  * 
  */
-@Table(database = MyDatabase.class)
+@Table(database = TwitterDatabase.class)
 public class SampleModel extends BaseModel {
 
-	@PrimaryKey
-	@Column
-	Long id;
+    @PrimaryKey
+    @Column
+    Long id;
 
-	// Define table fields
-	@Column
-	private String name;
+    // Define table fields
+    @Column
+    private String name;
 
-	public SampleModel() {
-		super();
-	}
+    public SampleModel() {
+        super();
+    }
 
-	// Parse model from JSON
-	public SampleModel(JSONObject object){
-		super();
+    // Parse model from JSON
+    public SampleModel(JSONObject object) {
+        super();
 
-		try {
-			this.name = object.getString("title");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            this.name = object.getString("title");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
-	// Getters
-	public String getName() {
-		return name;
-	}
+    // Getters
+    public String getName() {
+        return name;
+    }
 
-	// Setters
-	public void setName(String name) {
-		this.name = name;
-	}
+    // Setters
+    public void setName(String name) {
+        this.name = name;
+    }
 
 	/* The where class in this code below will be marked red until you first compile the project, since the code 
-	 * for the SampleModel_Table class is generated at compile-time.
+     * for the SampleModel_Table class is generated at compile-time.
 	 */
-	
-	// Record Finders
-	public static SampleModel byId(long id) {
-		return new Select().from(SampleModel.class).where(SampleModel_Table.id.eq(id)).querySingle();
-	}
 
-	public static List<SampleModel> recentItems() {
-		return new Select().from(SampleModel.class).orderBy(SampleModel_Table.id, false).limit(300).queryList();
-	}
+    // Record Finders
+    public static SampleModel byId(long id) {
+        return new Select().from(SampleModel.class).where(SampleModel_Table.id.eq(id)).querySingle();
+    }
+
+    public static List<SampleModel> recentItems() {
+        return new Select().from(SampleModel.class).orderBy(SampleModel_Table.id, false).limit(300).queryList();
+    }
 }

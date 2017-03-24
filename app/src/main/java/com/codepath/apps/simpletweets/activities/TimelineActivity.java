@@ -9,21 +9,26 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.TwitterApplication;
 import com.codepath.apps.simpletweets.TwitterClient;
 import com.codepath.apps.simpletweets.adapters.TweetAdapter;
+import com.codepath.apps.simpletweets.db.TwitterDatabase;
 import com.codepath.apps.simpletweets.fragments.AddNewTweetDialog;
 import com.codepath.apps.simpletweets.models.Tweet;
+import com.codepath.apps.simpletweets.models.Tweet_Table;
 import com.codepath.apps.simpletweets.utils.EndlessRecyclerViewScrollListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
+import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,7 +70,10 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
         setContentView(R.layout.activity_timeline);
         ButterKnife.bind(this);
 
-        tweets = new ArrayList<>();
+        //Get tweets from SQLite database
+        tweets = SQLite.select().
+                from(Tweet.class).orderBy(Tweet_Table.uid, true).queryList();
+
         adapter = new TweetAdapter(this, tweets);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -105,13 +113,10 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
         client = TwitterApplication.getRestClient(); //singleton client
 
-        fabAddTweet.setOnClickListener(new FloatingActionButton.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getSupportFragmentManager();
-                AddNewTweetDialog addDialog = AddNewTweetDialog.newInstance();
-                addDialog.show(fm, "fragment_filter_dialog");
-            }
+        fabAddTweet.setOnClickListener(v -> {
+            FragmentManager fm = getSupportFragmentManager();
+            AddNewTweetDialog addDialog = AddNewTweetDialog.newInstance();
+            addDialog.show(fm, "fragment_filter_dialog");
         });
 
 
@@ -127,6 +132,8 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
                 Tweet newTweet = Tweet.fromJSON(response);
 
                 if (!tweets.contains(newTweet)) {
+                    newTweet.save();
+
                     tweets.add(0, newTweet);
                     adapter.notifyItemInserted(0);
                 }
@@ -166,14 +173,46 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
                 if (!newRes.isEmpty()) {
                     if (mode == WorkMode.REFRESH) {
                         sinceId = newRes.get(0).getUid();
-                        tweets.addAll(0, Tweet.getUniqueTweets(tweets, newRes));
+
+                        List<Tweet> newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
+                        tweets.addAll(0, newUniqueTweets);
+
+                        FastStoreModelTransaction
+                                .insertBuilder(FlowManager.getModelAdapter(Tweet.class))
+                                .addAll(newUniqueTweets)
+                                .build();
+
                     } else if (mode == WorkMode.SCROLL) {
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        tweets.addAll(Tweet.getUniqueTweets(tweets, newRes));
+                        List<Tweet> newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
+                        tweets.addAll(newUniqueTweets);
+
+                        FastStoreModelTransaction
+                                .insertBuilder(FlowManager.getModelAdapter(Tweet.class))
+                                .addAll(newUniqueTweets)
+                                .build();
+
                     } else {
                         sinceId = newRes.get(0).getUid();
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        tweets.addAll(Tweet.getUniqueTweets(tweets, newRes));
+
+                        List<Tweet> newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
+                        tweets.addAll(newUniqueTweets);
+
+                        FastStoreModelTransaction<Tweet> fsmt = FastStoreModelTransaction
+                                .saveBuilder(FlowManager.getModelAdapter(Tweet.class))
+                                .addAll(newUniqueTweets)
+                                .build();
+
+                        DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
+                        Transaction transaction = database.beginTransactionAsync(fsmt)
+                                .success(transactionSuccess -> {
+                                    // This runs on UI thread
+
+                                }).error((transactionError, error) -> Log.e("ServiceError", error.getMessage())).build();
+                        transaction.execute();
+
+
                     }
 
                     adapter.notifyDataSetChanged();
