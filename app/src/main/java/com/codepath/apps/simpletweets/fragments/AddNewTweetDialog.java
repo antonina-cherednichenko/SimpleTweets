@@ -13,10 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.TwitterApplication;
 import com.codepath.apps.simpletweets.models.User;
-import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,7 +83,7 @@ public class AddNewTweetDialog extends DialogFragment {
 
         tvName.setText(accountUser.getName());
         tvScreenName.setText(String.format("@%s", accountUser.getScreenName()));
-        Picasso.with(getContext()).load(accountUser.getProfileUrl()).into(ivProfile);
+        Glide.with(getContext()).load(accountUser.getProfileUrl()).into(ivProfile);
 
 
     }

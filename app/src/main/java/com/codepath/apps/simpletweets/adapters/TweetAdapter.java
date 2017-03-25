@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         holder.tvBody.setText(tweet.getBody());
         holder.tvTimestamp.setText(TimestampUtils.getRelativeTimeAgo(tweet.getCreateAt()));
 
-        Picasso.with(context).load(tweet.getUser().getProfileUrl()).into(holder.ivProfileImage);
+        Glide.with(context).load(tweet.getUser().getProfileUrl()).into(holder.ivProfileImage);
     }
 
 
