@@ -69,6 +69,13 @@ public class AddNewTweetDialog extends DialogFragment {
 
         User accountUser = TwitterApplication.getAccountUser();
 
+        btnAdd.setOnClickListener(v -> {
+
+            AddTweetListener listener = (AddTweetListener) getActivity();
+            listener.addTweet(tvBody.getText().toString());
+            dismiss();
+        });
+
         if (accountUser == null) {
             Log.d("ERROR", "Account user is not set");
             return;
@@ -78,12 +85,6 @@ public class AddNewTweetDialog extends DialogFragment {
         tvScreenName.setText(String.format("@%s", accountUser.getScreenName()));
         Picasso.with(getContext()).load(accountUser.getProfileUrl()).into(ivProfile);
 
-        btnAdd.setOnClickListener(v -> {
-
-            AddTweetListener listener = (AddTweetListener) getActivity();
-            listener.addTweet(tvBody.getText().toString());
-            dismiss();
-        });
 
     }
 

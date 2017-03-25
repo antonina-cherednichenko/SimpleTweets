@@ -72,7 +72,7 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
         //Get tweets from SQLite database
         tweets = SQLite.select().
-                from(Tweet.class).orderBy(Tweet_Table.uid, true).queryList();
+                from(Tweet.class).orderBy(Tweet_Table.uid, false).queryList();
 
         adapter = new TweetAdapter(this, tweets);
 
@@ -135,7 +135,7 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
                     newTweet.save();
 
                     tweets.add(0, newTweet);
-                    adapter.notifyItemInserted(0);
+                    adapter.notifyItemChanged(0);
                 }
             }
 
@@ -171,51 +171,39 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 List<Tweet> newRes = Tweet.fromJSONArray(response);
                 if (!newRes.isEmpty()) {
+                    List<Tweet> newUniqueTweets;
                     if (mode == WorkMode.REFRESH) {
                         sinceId = newRes.get(0).getUid();
-
-                        List<Tweet> newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
+                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
                         tweets.addAll(0, newUniqueTweets);
-
-                        FastStoreModelTransaction
-                                .insertBuilder(FlowManager.getModelAdapter(Tweet.class))
-                                .addAll(newUniqueTweets)
-                                .build();
 
                     } else if (mode == WorkMode.SCROLL) {
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        List<Tweet> newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
+                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
                         tweets.addAll(newUniqueTweets);
-
-                        FastStoreModelTransaction
-                                .insertBuilder(FlowManager.getModelAdapter(Tweet.class))
-                                .addAll(newUniqueTweets)
-                                .build();
 
                     } else {
                         sinceId = newRes.get(0).getUid();
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-
-                        List<Tweet> newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
+                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
                         tweets.addAll(newUniqueTweets);
-
-                        FastStoreModelTransaction<Tweet> fsmt = FastStoreModelTransaction
-                                .saveBuilder(FlowManager.getModelAdapter(Tweet.class))
-                                .addAll(newUniqueTweets)
-                                .build();
-
-                        DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
-                        Transaction transaction = database.beginTransactionAsync(fsmt)
-                                .success(transactionSuccess -> {
-                                    // This runs on UI thread
-
-                                }).error((transactionError, error) -> Log.e("ServiceError", error.getMessage())).build();
-                        transaction.execute();
-
-
                     }
 
                     adapter.notifyDataSetChanged();
+
+                    FastStoreModelTransaction<Tweet> fsmt = FastStoreModelTransaction
+                            .saveBuilder(FlowManager.getModelAdapter(Tweet.class))
+                            .addAll(newUniqueTweets)
+                            .build();
+
+                    DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
+                    Transaction transaction = database.beginTransactionAsync(fsmt)
+                            .success(transactionSuccess -> {
+                                // This runs on UI thread
+
+                            }).error((transactionError, error) -> Log.e("ServiceError", error.getMessage())).build();
+                    transaction.execute();
+
                 }
                 swipeContainer.setRefreshing(false);
             }
