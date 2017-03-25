@@ -2,6 +2,7 @@ package com.codepath.apps.simpletweets.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweets.R;
+import com.codepath.apps.simpletweets.activities.TweetDetailActivity;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -69,8 +73,20 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
         public TweetViewHolder(View itemView) {
             super(itemView);
-
             ButterKnife.bind(this, itemView);
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                Tweet tweet = tweets.get(position);
+
+                Context context = itemView.getContext();
+                Intent intent = new Intent(context, TweetDetailActivity.class);
+                intent.putExtra(TweetDetailActivity.TWEET_EXTRA, Parcels.wrap(tweet));
+                context.startActivity(intent);
+
+            });
+
+
         }
     }
 }
