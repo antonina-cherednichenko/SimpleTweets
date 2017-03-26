@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.activities.TweetDetailActivity;
+import com.codepath.apps.simpletweets.models.Media;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
 
@@ -53,6 +55,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         holder.tvBody.setText(tweet.getBody());
         holder.tvTimestamp.setText(TimestampUtils.getRelativeTimeAgo(tweet.getCreateAt()));
 
+        Media tweetMedia = tweet.getMedia();
+        if (tweetMedia != null && tweetMedia.getType().equals("photo")) {
+            Glide.with(context).load(tweetMedia.getMediaUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .fitCenter().into(holder.ivBodyImage);
+        } else {
+            holder.ivBodyImage.setImageResource(0);
+        }
+
         Glide.with(context).load(tweet.getUser().getProfileUrl()).into(holder.ivProfileImage);
     }
 
@@ -69,6 +79,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         TextView tvTimestamp;
         @BindView(R.id.tvBody)
         TextView tvBody;
+        @BindView(R.id.ivBodyImage)
+        ImageView ivBodyImage;
 
 
         public TweetViewHolder(View itemView) {

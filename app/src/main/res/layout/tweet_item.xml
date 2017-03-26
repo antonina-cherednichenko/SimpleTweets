@@ -40,6 +40,7 @@
         android:layout_margin="@dimen/simple_margin"
         android:textColor="@android:color/darker_gray" />
 
+
     <TextView
         android:id="@+id/tvBody"
         android:layout_width="wrap_content"
@@ -49,4 +50,12 @@
         android:layout_toRightOf="@id/ivProfileImage"
         android:autoLink="all"
         android:linksClickable="true" />
+
+    <ImageView
+        android:id="@+id/ivBodyImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvBody"
+        android:layout_margin="@dimen/simple_margin"
+        android:layout_toRightOf="@id/ivProfileImage" />
 </RelativeLayout>

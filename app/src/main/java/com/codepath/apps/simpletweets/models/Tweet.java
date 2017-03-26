@@ -33,6 +33,11 @@ public class Tweet extends BaseModel {
     @Column
     String createAt;
 
+    @Column
+    @ForeignKey(saveForeignKeyModel = true)
+    Media media;
+
+
     public String getBody() {
         return body;
     }
@@ -49,6 +54,10 @@ public class Tweet extends BaseModel {
         return user;
     }
 
+    public Media getMedia() {
+        return media;
+    }
+
     public static Tweet fromJSON(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
         try {
@@ -56,6 +65,7 @@ public class Tweet extends BaseModel {
             tweet.uid = jsonObject.getLong("id");
             tweet.createAt = jsonObject.getString("created_at");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+            tweet.media = Media.fromJSON(jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0));
         } catch (JSONException e) {
             e.printStackTrace();
         }
