@@ -20,6 +20,6 @@ public class TweetDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tweet_detail);
 
         Intent intent = getIntent();
-        tweet = Parcels.unwrap(intent.getParcelableExtra("tweet"));
+        tweet = Parcels.unwrap(intent.getParcelableExtra(TWEET_EXTRA));
     }
 }

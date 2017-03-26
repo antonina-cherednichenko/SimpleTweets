@@ -95,14 +95,11 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
         setupToolbar();
 
 
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-                populateTimeline(WorkMode.REFRESH);
-            }
+        swipeContainer.setOnRefreshListener(() -> {
+            // Your code to refresh the list here.
+            // Make sure you call swipeContainer.setRefreshing(false)
+            // once the network request has completed successfully.
+            populateTimeline(WorkMode.REFRESH);
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
