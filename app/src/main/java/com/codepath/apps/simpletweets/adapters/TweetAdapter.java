@@ -63,6 +63,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
             holder.ivBodyImage.setImageResource(0);
         }
 
+
         Glide.with(context).load(tweet.getUser().getProfileUrl()).into(holder.ivProfileImage);
     }
 

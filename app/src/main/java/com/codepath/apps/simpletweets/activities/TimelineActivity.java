@@ -29,6 +29,7 @@ import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -71,8 +72,14 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
         ButterKnife.bind(this);
 
         //Get tweets from SQLite database
-        tweets = SQLite.select().
-                from(Tweet.class).orderBy(Tweet_Table.uid, false).queryList();
+        DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
+        if (database != null ) {
+            tweets = SQLite.select().
+                    from(Tweet.class).orderBy(Tweet_Table.uid, false).queryList();
+        } else {
+            tweets = new ArrayList<>();
+        }
+
 
         adapter = new TweetAdapter(this, tweets);
 
@@ -194,6 +201,7 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
                             .build();
 
                     DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
+
                     Transaction transaction = database.beginTransactionAsync(fsmt)
                             .success(transactionSuccess -> {
                                 // This runs on UI thread

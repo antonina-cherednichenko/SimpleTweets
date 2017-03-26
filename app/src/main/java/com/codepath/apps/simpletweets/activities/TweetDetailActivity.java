@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
+import com.codepath.apps.simpletweets.models.Media;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
 
@@ -38,6 +40,9 @@ public class TweetDetailActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.ivBodyImage)
+    ImageView ivBodyImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,20 +50,32 @@ public class TweetDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        setupToolbar();
+
         Intent intent = getIntent();
         tweet = Parcels.unwrap(intent.getParcelableExtra(TWEET_EXTRA));
 
         Glide.with(this).load(tweet.getUser().getProfileUrl()).into(ivProfileImage);
-
         tvBody.setText(tweet.getBody());
         tvUserName.setText(tweet.getUser().getName());
         tvUserScreenName.setText(tweet.getUser().getScreenName());
         tvTimestamp.setText(TimestampUtils.getRelativeTimeAgo(tweet.getCreateAt()));
 
+        //Setup media files if applicable
+        Media tweetMedia = tweet.getMedia();
+        if (tweetMedia != null && tweetMedia.getType().equals("photo")) {
+            Glide.with(this).load(tweetMedia.getMediaUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .fitCenter().into(ivBodyImage);
+        } else {
+            ivBodyImage.setImageResource(0);
+        }
+
+    }
+
+    private void setupToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Twwets");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
 
