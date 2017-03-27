@@ -73,7 +73,7 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
         //Get tweets from SQLite database
         DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
-        if (database != null ) {
+        if (database != null) {
             tweets = SQLite.select().
                     from(Tweet.class).orderBy(Tweet_Table.uid, false).queryList();
         } else {
@@ -99,8 +99,6 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
         };
         rvTweets.addOnScrollListener(scrollListener);
 
-        setupToolbar();
-
 
         swipeContainer.setOnRefreshListener(() -> {
             // Your code to refresh the list here.
@@ -125,6 +123,8 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
 
         populateTimeline(WorkMode.INIT);
+
+        setupToolbar(getString(R.string.app_name));
     }
 
 
@@ -150,9 +150,9 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
         });
     }
 
-    private void setupToolbar() {
+    private void setupToolbar(String title) {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.app_name);
+        getSupportActionBar().setTitle(title);
 
     }
 

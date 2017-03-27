@@ -50,10 +50,10 @@ public class TweetDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        setupToolbar();
-
         Intent intent = getIntent();
         tweet = Parcels.unwrap(intent.getParcelableExtra(TWEET_EXTRA));
+
+        setupToolbar(tweet.getUser().getName());
 
         Glide.with(this).load(tweet.getUser().getProfileUrl()).into(ivProfileImage);
         tvBody.setText(tweet.getBody());
@@ -72,9 +72,9 @@ public class TweetDetailActivity extends AppCompatActivity {
 
     }
 
-    private void setupToolbar() {
+    private void setupToolbar(String userName) {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Twwets");
+        getSupportActionBar().setTitle(String.format("Tweet from %s", userName));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
