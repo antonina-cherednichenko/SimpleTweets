@@ -8,4 +8,6 @@
     <string name="what_is_happening">What\'s happening?</string>
     <string name="post_tweet">Post</string>
 
+    <string name="too_long_tweet_error">Too long tweet, limit it to 140 symbols</string>
+
 </resources>

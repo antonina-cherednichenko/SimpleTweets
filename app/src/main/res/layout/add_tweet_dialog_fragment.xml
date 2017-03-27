@@ -28,23 +28,31 @@
         android:layout_toLeftOf="@id/ivProfileImage" />
 
 
-    <EditText
-        android:id="@+id/etBody"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilTweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivProfileImage"
         android:layout_marginLeft="@dimen/simple_margin"
         android:layout_marginRight="@dimen/simple_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:hint="@string/what_is_happening" />
+        android:layout_marginTop="@dimen/simple_margin">
+
+        <EditText
+            android:id="@+id/etBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/what_is_happening"
+            android:minLines="5" />
+
+    </android.support.design.widget.TextInputLayout>
 
 
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/etBody"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tilTweet"
         android:layout_margin="@dimen/min_margin"
         android:text="@string/post_tweet" />
 

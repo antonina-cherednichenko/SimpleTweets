@@ -3,7 +3,10 @@ package com.codepath.apps.simpletweets.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +26,8 @@ import butterknife.ButterKnife;
 
 public class AddNewTweetDialog extends DialogFragment {
 
+    private static final int TWEET_MAX_LENGTH = 140;
+
     @BindView(R.id.etBody)
     EditText tvBody;
 
@@ -37,6 +42,9 @@ public class AddNewTweetDialog extends DialogFragment {
 
     @BindView(R.id.btnAdd)
     Button btnAdd;
+
+    @BindView(R.id.tilTweet)
+    TextInputLayout tilTweet;
 
     public interface AddTweetListener {
         void addTweet(String tweetBody);
@@ -85,7 +93,35 @@ public class AddNewTweetDialog extends DialogFragment {
         tvScreenName.setText(String.format("@%s", accountUser.getScreenName()));
         Glide.with(getContext()).load(accountUser.getProfileUrl()).into(ivProfile);
 
+        setupFloatingLabelError();
 
+    }
+
+    private void setupFloatingLabelError() {
+        tilTweet.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+                if (text.length() > 0 && text.length() >= TWEET_MAX_LENGTH) {
+                    tilTweet.setError(getString(R.string.too_long_tweet_error));
+                    tilTweet.setErrorEnabled(true);
+                    btnAdd.setEnabled(false);
+                } else {
+                    tilTweet.setErrorEnabled(false);
+                }
+                tilTweet.setHint(String.format("%d characters are left ", TWEET_MAX_LENGTH - text.length()));
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
 
