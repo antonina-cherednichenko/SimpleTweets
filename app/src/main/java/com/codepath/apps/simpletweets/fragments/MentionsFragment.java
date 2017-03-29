@@ -1,9 +1,7 @@
 package com.codepath.apps.simpletweets.fragments;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +36,7 @@ import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 
-public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddTweetListener {
+public class MentionsFragment extends Fragment {
 
     private enum WorkMode {
         SCROLL,
@@ -49,21 +47,18 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
 
     private TwitterClient client;
     private TweetAdapter adapter;
-    private List<Tweet> tweets;
+    private List<Tweet> mentions;
     private long maxId = 1;
     private long sinceId = 1;
 
     // Store a member variable for the listener
     private EndlessRecyclerViewScrollListener scrollListener;
 
-    @BindView(R.id.swipeContainer)
+    @BindView(R.id.swipeContainerMentions)
     SwipeRefreshLayout swipeContainer;
 
-    @BindView(R.id.rvTweets)
-    RecyclerView rvTweets;
-
-    @BindView(R.id.fabAddTweet)
-    FloatingActionButton fabAddTweet;
+    @BindView(R.id.rvMentions)
+    RecyclerView rvMentions;
 
 
     @Override
@@ -74,26 +69,26 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_timeline, container, false);
+        View view = inflater.inflate(R.layout.fragment_mentions, container, false);
 
         ButterKnife.bind(this, view);
 
-        //Get tweets from SQLite database
+        //Get mentions from SQLite database
         DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
         if (database != null) {
-            tweets = SQLite.select().
-                    from(Tweet.class).where(Tweet_Table.isMention.is(false)).orderBy(Tweet_Table.uid, false).queryList();
+            mentions = SQLite.select().
+                    from(Tweet.class).where(Tweet_Table.isMention.is(true)).orderBy(Tweet_Table.uid, false).queryList();
         } else {
-            tweets = new ArrayList<>();
+            mentions = new ArrayList<>();
         }
 
 
-        adapter = new TweetAdapter(getContext(), tweets);
+        adapter = new TweetAdapter(getContext(), mentions);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rvTweets.setLayoutManager(llm);
-        rvTweets.setAdapter(adapter);
+        rvMentions.setLayoutManager(llm);
+        rvMentions.setAdapter(adapter);
         scrollListener = new EndlessRecyclerViewScrollListener(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -104,7 +99,7 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
 
             }
         };
-        rvTweets.addOnScrollListener(scrollListener);
+        rvMentions.addOnScrollListener(scrollListener);
 
 
         swipeContainer.setOnRefreshListener(() -> {
@@ -121,12 +116,6 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
 
 
         client = TwitterApplication.getRestClient(); //singleton client
-
-        fabAddTweet.setOnClickListener(v -> {
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            AddNewTweetDialog addDialog = AddNewTweetDialog.newInstance();
-            addDialog.show(fm, "fragment_filter_dialog");
-        });
 
 
         populateTimeline(WorkMode.INIT);
@@ -148,34 +137,34 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
             maxIdVal = this.maxId;
         }
 
-        client.getHomeTimeline(maxIdVal, sinceIdVal, new JsonHttpResponseHandler() {
+        client.getMentions(maxIdVal, sinceIdVal, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                List<Tweet> newRes = Tweet.fromJSONArray(response);
+                List<Tweet> newRes = Tweet.fromJSONArray(response, true);
                 if (!newRes.isEmpty()) {
-                    List<Tweet> newUniqueTweets;
+                    List<Tweet> newUniqueMentions;
                     if (mode == WorkMode.REFRESH) {
                         sinceId = newRes.get(0).getUid();
-                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
-                        tweets.addAll(0, newUniqueTweets);
+                        newUniqueMentions = Tweet.getUniqueTweets(mentions, newRes);
+                        mentions.addAll(0, newUniqueMentions);
 
                     } else if (mode == WorkMode.SCROLL) {
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
-                        tweets.addAll(newUniqueTweets);
+                        newUniqueMentions = Tweet.getUniqueTweets(mentions, newRes);
+                        mentions.addAll(newUniqueMentions);
 
                     } else {
                         sinceId = newRes.get(0).getUid();
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
-                        tweets.addAll(newUniqueTweets);
+                        newUniqueMentions = Tweet.getUniqueTweets(mentions, newRes);
+                        mentions.addAll(newUniqueMentions);
                     }
 
                     adapter.notifyDataSetChanged();
 
                     FastStoreModelTransaction<Tweet> fsmt = FastStoreModelTransaction
                             .saveBuilder(FlowManager.getModelAdapter(Tweet.class))
-                            .addAll(newUniqueTweets)
+                            .addAll(newUniqueMentions)
                             .build();
 
                     DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
@@ -200,26 +189,4 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
         });
     }
 
-
-    @Override
-    public void addTweet(String tweetBody) {
-        client.addNewTweet(tweetBody, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Tweet newTweet = Tweet.fromJSON(response, false);
-
-                if (!tweets.contains(newTweet)) {
-                    newTweet.save();
-
-                    tweets.add(0, newTweet);
-                    adapter.notifyItemChanged(0);
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("ERROR", errorResponse.toString());
-            }
-        });
-    }
 }

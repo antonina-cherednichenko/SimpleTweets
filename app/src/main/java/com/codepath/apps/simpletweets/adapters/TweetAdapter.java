@@ -56,13 +56,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         holder.tvTimestamp.setText(TimestampUtils.getRelativeTimeAgo(tweet.getCreateAt()));
 
         Media tweetMedia = tweet.getMedia();
-        if (tweetMedia != null && tweetMedia.getType().equals("photo")) {
+        if (tweetMedia == null) {
+            return;
+        }
+
+
+        if (tweetMedia.getType().equals("photo")) {
             Glide.with(context).load(tweetMedia.getMediaUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .fitCenter().into(holder.ivBodyImage);
         } else {
             holder.ivBodyImage.setImageResource(0);
         }
-
 
         Glide.with(context).load(tweet.getUser().getProfileUrl()).into(holder.ivProfileImage);
     }

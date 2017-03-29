@@ -28,7 +28,8 @@ public class TwitterClient extends OAuthBaseClient {
     public static final String REST_CONSUMER_SECRET = "lvB8CzkSCqexJ5KuXgsVjJjknDiJMQTIz0KImF3U2YiaVPgPnc";
     public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
-    public static final int TWEETS_COUNT = 25;
+    public static final int TWEETS_COUNT = 50;
+    public static final int MENTIONS_COUNT = 50;
 
     public TwitterClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
@@ -41,6 +42,22 @@ public class TwitterClient extends OAuthBaseClient {
         //Specify the parameters
         RequestParams params = new RequestParams();
         params.put("count", TWEETS_COUNT);
+        if (sinceId != null) {
+            params.put("since_id", sinceId);
+        }
+
+        if (maxId != null) {
+            params.put("max_id", maxId);
+        }
+        //Execute the request
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getMentions(Long maxId, Long sinceId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        //Specify the parameters
+        RequestParams params = new RequestParams();
+        params.put("count", MENTIONS_COUNT);
         if (sinceId != null) {
             params.put("since_id", sinceId);
         }

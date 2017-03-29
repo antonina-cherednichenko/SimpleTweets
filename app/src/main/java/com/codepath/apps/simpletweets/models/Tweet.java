@@ -37,6 +37,9 @@ public class Tweet extends BaseModel {
     @ForeignKey(saveForeignKeyModel = true)
     Media media;
 
+    @Column
+    boolean isMention;
+
 
     public String getBody() {
         return body;
@@ -58,9 +61,14 @@ public class Tweet extends BaseModel {
         return media;
     }
 
-    public static Tweet fromJSON(JSONObject jsonObject) {
+    public boolean isMention() {
+        return isMention;
+    }
+
+    public static Tweet fromJSON(JSONObject jsonObject, boolean isMention) {
         Tweet tweet = new Tweet();
         try {
+            tweet.isMention = isMention;
             tweet.body = jsonObject.getString("text");
             tweet.uid = jsonObject.getLong("id");
             tweet.createAt = jsonObject.getString("created_at");
@@ -77,10 +85,14 @@ public class Tweet extends BaseModel {
     }
 
     public static List<Tweet> fromJSONArray(JSONArray jsonArray) {
+        return fromJSONArray(jsonArray, false);
+    }
+
+    public static List<Tweet> fromJSONArray(JSONArray jsonArray, boolean isMention) {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                Tweet tweet = Tweet.fromJSON(jsonArray.getJSONObject(i));
+                Tweet tweet = Tweet.fromJSON(jsonArray.getJSONObject(i), isMention);
                 if (tweet != null) {
                     tweets.add(tweet);
                 }
