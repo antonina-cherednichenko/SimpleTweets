@@ -6,8 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.codepath.apps.simpletweets.fragments.MentionsFragment;
-import com.codepath.apps.simpletweets.fragments.TimelineFragment;
+import com.codepath.apps.simpletweets.fragments.TweetsFragment;
 
 public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -28,9 +27,9 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new TimelineFragment();
+            return TweetsFragment.newInstance(TweetsFragment.FragmentMode.TIMELINE);
         } else {
-            return new MentionsFragment();
+            return TweetsFragment.newInstance(TweetsFragment.FragmentMode.MENTIONS);
         }
 
     }

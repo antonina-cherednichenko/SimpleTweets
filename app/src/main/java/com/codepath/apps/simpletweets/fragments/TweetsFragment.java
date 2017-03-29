@@ -1,9 +1,7 @@
 package com.codepath.apps.simpletweets.fragments;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +17,6 @@ import com.codepath.apps.simpletweets.adapters.TweetAdapter;
 import com.codepath.apps.simpletweets.db.TwitterDatabase;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.models.Tweet_Table;
-import com.codepath.apps.simpletweets.models.User;
 import com.codepath.apps.simpletweets.utils.EndlessRecyclerViewScrollListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
@@ -38,10 +35,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
-import static com.codepath.apps.simpletweets.TwitterApplication.getRestClient;
+import static com.raizlabs.android.dbflow.sql.language.SQLite.select;
 
 
-public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddTweetListener {
+public class TweetsFragment extends Fragment {
+
+    public enum FragmentMode {
+        TIMELINE,
+        MENTIONS,
+        USER_TIMELINE
+    }
 
     private enum WorkMode {
         SCROLL,
@@ -49,6 +52,8 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
         INIT
     }
 
+    public static final String ARG_MODE = "ARG_MODE";
+    private FragmentMode fragmentMode;
 
     private TwitterClient client;
     private TweetAdapter adapter;
@@ -56,56 +61,43 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
     private long maxId = 1;
     private long sinceId = 1;
 
-    // Store a member variable for the listener
-    private EndlessRecyclerViewScrollListener scrollListener;
-
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
 
     @BindView(R.id.rvTweets)
     RecyclerView rvTweets;
 
-    @BindView(R.id.fabAddTweet)
-    FloatingActionButton fabAddTweet;
 
-    private JsonHttpResponseHandler getUserHandler = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("DEBUG", response.toString());
-            TwitterApplication.setAccountUser(User.fromJSON(response));
+    // Store a member variable for the listener
+    private EndlessRecyclerViewScrollListener scrollListener;
+    private DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
 
-            showAddTweetFragment();
-        }
 
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.d("DEBUG", throwable.toString());
+    public static TweetsFragment newInstance(FragmentMode mode) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_MODE, mode);
 
-        }
-    };
+        TweetsFragment fragment = new TweetsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentMode = (FragmentMode) getArguments().getSerializable(ARG_MODE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_timeline, container, false);
+        View view = inflater.inflate(R.layout.fragment_tweets, container, false);
 
         ButterKnife.bind(this, view);
 
         //Get tweets from SQLite database
-        DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
-        if (database != null) {
-            tweets = SQLite.select().
-                    from(Tweet.class).where(Tweet_Table.isMention.is(false)).orderBy(Tweet_Table.uid, false).queryList();
-        } else {
-            tweets = new ArrayList<>();
-        }
-
+        getSavedTweetsFromDB();
 
         adapter = new TweetAdapter(getContext(), tweets);
 
@@ -139,18 +131,7 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
                 android.R.color.holo_red_light);
 
 
-        client = getRestClient(); //singleton client
-
-        fabAddTweet.setOnClickListener(v -> {
-
-            if (TwitterApplication.getAccountUser() == null) {
-                getRestClient().getUserInfo(getUserHandler);
-            } else {
-                showAddTweetFragment();
-            }
-
-
-        });
+        client = TwitterApplication.getRestClient(); //singleton client
 
 
         populateTimeline(WorkMode.INIT);
@@ -158,57 +139,76 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
         return view;
     }
 
-    private void showAddTweetFragment() {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        AddNewTweetDialog addDialog = AddNewTweetDialog.newInstance();
-        addDialog.show(fm, "fragment_filter_dialog");
+    private void getSavedTweetsFromDB() {
+        if (database != null) {
+            switch (fragmentMode) {
+                case TIMELINE:
+                    tweets = select().
+                            from(Tweet.class).orderBy(Tweet_Table.uid, false).queryList();
+                    break;
+                case MENTIONS:
+                    tweets = select().
+                            from(Tweet.class).where(Tweet_Table.isMention.is(true)).orderBy(Tweet_Table.uid, false).queryList();
+                    break;
+                case USER_TIMELINE:
+                    if (TwitterApplication.getAccountUser() != null) {
+                        tweets = SQLite.select().
+                                from(Tweet.class).where(Tweet_Table.user_uid.is(TwitterApplication.getAccountUser().getUid())).orderBy(Tweet_Table.uid, false).queryList();
+                    } else {
+                        tweets = new ArrayList<>();
+                    }
+
+                    break;
+            }
+        } else {
+            tweets = new ArrayList<>();
+        }
+
+
     }
 
-
     //Send an API request to get the timeline Json
-    private void populateTimeline(final WorkMode mode) {
+    private void populateTimeline(final WorkMode workMode) {
         Long sinceIdVal = null;
         Long maxIdVal = null;
 
-        if (mode == WorkMode.INIT) {
+        if (workMode == WorkMode.INIT) {
             sinceIdVal = 1L;
-        } else if (mode == WorkMode.REFRESH) {
+        } else if (workMode == WorkMode.REFRESH) {
             sinceIdVal = this.sinceId;
-        } else if (mode == WorkMode.SCROLL) {
+        } else if (workMode == WorkMode.SCROLL) {
             maxIdVal = this.maxId;
         }
 
-        client.getHomeTimeline(maxIdVal, sinceIdVal, new JsonHttpResponseHandler() {
+        JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                List<Tweet> newRes = Tweet.fromJSONArray(response);
+                List<Tweet> newRes = Tweet.fromJSONArray(response, fragmentMode == FragmentMode.MENTIONS);
                 if (!newRes.isEmpty()) {
-                    List<Tweet> newUniqueTweets;
-                    if (mode == WorkMode.REFRESH) {
+                    List<Tweet> newUniqueMentions;
+                    if (workMode == WorkMode.REFRESH) {
                         sinceId = newRes.get(0).getUid();
-                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
-                        tweets.addAll(0, newUniqueTweets);
+                        newUniqueMentions = Tweet.getUniqueTweets(tweets, newRes);
+                        tweets.addAll(0, newUniqueMentions);
 
-                    } else if (mode == WorkMode.SCROLL) {
+                    } else if (workMode == WorkMode.SCROLL) {
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
-                        tweets.addAll(newUniqueTweets);
+                        newUniqueMentions = Tweet.getUniqueTweets(tweets, newRes);
+                        tweets.addAll(newUniqueMentions);
 
                     } else {
                         sinceId = newRes.get(0).getUid();
                         maxId = newRes.get(newRes.size() - 1).getUid() - 1;
-                        newUniqueTweets = Tweet.getUniqueTweets(tweets, newRes);
-                        tweets.addAll(newUniqueTweets);
+                        newUniqueMentions = Tweet.getUniqueTweets(tweets, newRes);
+                        tweets.addAll(newUniqueMentions);
                     }
 
                     adapter.notifyDataSetChanged();
 
                     FastStoreModelTransaction<Tweet> fsmt = FastStoreModelTransaction
                             .saveBuilder(FlowManager.getModelAdapter(Tweet.class))
-                            .addAll(newUniqueTweets)
+                            .addAll(newUniqueMentions)
                             .build();
-
-                    DatabaseDefinition database = FlowManager.getDatabase(TwitterDatabase.class);
 
                     Transaction transaction = database.beginTransactionAsync(fsmt)
                             .success(transactionSuccess -> {
@@ -227,29 +227,30 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
                 swipeContainer.setRefreshing(false);
 
             }
-        });
+        };
+
+        switch (fragmentMode) {
+            case TIMELINE:
+                client.getHomeTimeline(maxIdVal, sinceIdVal, handler);
+                break;
+            case MENTIONS:
+                client.getMentions(maxIdVal, sinceIdVal, handler);
+                break;
+            case USER_TIMELINE:
+                client.getUserTimeline(maxIdVal, sinceIdVal, handler);
+                break;
+        }
+
+    }
+
+    public void addNewTweet(Tweet newTweet) {
+        if (!tweets.contains(newTweet)) {
+            newTweet.save();
+
+            tweets.add(0, newTweet);
+            adapter.notifyItemChanged(0);
+        }
     }
 
 
-    @Override
-    public void addTweet(String tweetBody) {
-        client.addNewTweet(tweetBody, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Tweet newTweet = Tweet.fromJSON(response, false);
-
-                if (!tweets.contains(newTweet)) {
-                    newTweet.save();
-
-                    tweets.add(0, newTweet);
-                    adapter.notifyItemChanged(0);
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("ERROR", errorResponse.toString());
-            }
-        });
-    }
 }

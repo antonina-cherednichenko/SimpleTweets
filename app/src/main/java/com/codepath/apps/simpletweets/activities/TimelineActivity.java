@@ -1,18 +1,36 @@
 package com.codepath.apps.simpletweets.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.codepath.apps.simpletweets.R;
+import com.codepath.apps.simpletweets.TwitterApplication;
+import com.codepath.apps.simpletweets.TwitterClient;
 import com.codepath.apps.simpletweets.adapters.TabFragmentPagerAdapter;
+import com.codepath.apps.simpletweets.fragments.AddNewTweetDialog;
+import com.codepath.apps.simpletweets.fragments.TweetsFragment;
+import com.codepath.apps.simpletweets.models.Tweet;
+import com.codepath.apps.simpletweets.models.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 
-public class TimelineActivity extends AppCompatActivity {
+import static com.codepath.apps.simpletweets.TwitterApplication.getRestClient;
+
+public class TimelineActivity extends AppCompatActivity implements AddNewTweetDialog.AddTweetListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -23,6 +41,29 @@ public class TimelineActivity extends AppCompatActivity {
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
+    @BindView(R.id.fabAddTweet)
+    FloatingActionButton fabAddTweet;
+
+    private TabFragmentPagerAdapter tabAdapter;
+    private TwitterClient client;
+
+
+    private JsonHttpResponseHandler getAccountUserHandler = new JsonHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            Log.d("DEBUG", response.toString());
+            TwitterApplication.setAccountUser(User.fromJSON(response));
+
+            showAddTweetFragment();
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Log.d("DEBUG", throwable.toString());
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +71,35 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
         ButterKnife.bind(this);
 
+        client = TwitterApplication.getRestClient(); //singleton client
+
         // Get the ViewPager and set it's PagerAdapter so that it can display items
-        viewPager.setAdapter(new TabFragmentPagerAdapter(getSupportFragmentManager(),
-                TimelineActivity.this));
+        tabAdapter = new TabFragmentPagerAdapter(getSupportFragmentManager(),
+                TimelineActivity.this);
+        viewPager.setAdapter(tabAdapter);
 
         // Give the TabLayout the ViewPager
         tabLayout.setupWithViewPager(viewPager);
 
 
+        fabAddTweet.setOnClickListener(v -> {
+
+            if (TwitterApplication.getAccountUser() == null) {
+                getRestClient().getUserInfo(getAccountUserHandler);
+            } else {
+                showAddTweetFragment();
+            }
+
+        });
+
+
         setupToolbar(getString(R.string.app_name));
+    }
+
+    private void showAddTweetFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        AddNewTweetDialog addDialog = AddNewTweetDialog.newInstance();
+        addDialog.show(fm, "fragment_filter_dialog");
     }
 
 
@@ -46,6 +107,44 @@ public class TimelineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(title);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_timeline, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_view_user:
+                Intent intent = new Intent(TimelineActivity.this, UserDetailActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void addTweet(String tweetBody) {
+        client.addNewTweet(tweetBody, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Tweet newTweet = Tweet.fromJSON(response, false);
+
+                TweetsFragment fragment = (TweetsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 0);
+                fragment.addNewTweet(newTweet);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("ERROR", errorResponse.toString());
+            }
+        });
     }
 
 

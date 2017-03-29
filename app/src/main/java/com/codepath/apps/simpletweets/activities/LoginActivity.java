@@ -2,7 +2,6 @@ package com.codepath.apps.simpletweets.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 
 import com.codepath.apps.simpletweets.R;
@@ -17,13 +16,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
         setContentView(R.layout.activity_login);
     }
 
-
-    // Inflate the menu; this adds items to the action bar if it is present.
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
 
     // OAuth authenticated successfully, launch primary authenticated activity
     // i.e Display application "homepage"
@@ -45,7 +37,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
     // Click handler method for the button used to start OAuth flow
     // Uses the client to initiate OAuth authorization
-    // This should be tied to a button used to login
+    // This should be tied to a button used to menu_timeline
     public void loginToRest(View view) {
         getClient().connect();
     }

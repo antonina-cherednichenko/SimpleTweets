@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.scribe.builder.api.Api;
@@ -30,6 +31,7 @@ public class TwitterClient extends OAuthBaseClient {
 
     public static final int TWEETS_COUNT = 50;
     public static final int MENTIONS_COUNT = 50;
+    public static final int USER_TWEETS_COUNT = 50;
 
     public TwitterClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
@@ -70,6 +72,23 @@ public class TwitterClient extends OAuthBaseClient {
 
     }
 
+    public void getUserTimeline(Long maxId, Long sinceId, JsonHttpResponseHandler handler) {
+
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        //Specify the parameters
+        RequestParams params = new RequestParams();
+        params.put("count", USER_TWEETS_COUNT);
+        if (sinceId != null) {
+            params.put("since_id", sinceId);
+        }
+
+        if (maxId != null) {
+            params.put("max_id", maxId);
+        }
+        //Execute the request
+        getClient().get(apiUrl, params, handler);
+    }
+
     public void getUserInfo(AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("account/verify_credentials.json");
         //Specify the parameters
@@ -88,6 +107,8 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().post(apiUrl, params, handler);
 
     }
+
+
 
 
 
