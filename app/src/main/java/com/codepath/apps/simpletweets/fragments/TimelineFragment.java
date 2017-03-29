@@ -19,6 +19,7 @@ import com.codepath.apps.simpletweets.adapters.TweetAdapter;
 import com.codepath.apps.simpletweets.db.TwitterDatabase;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.models.Tweet_Table;
+import com.codepath.apps.simpletweets.models.User;
 import com.codepath.apps.simpletweets.utils.EndlessRecyclerViewScrollListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
@@ -36,6 +37,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
+
+import static com.codepath.apps.simpletweets.TwitterApplication.getRestClient;
 
 
 public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddTweetListener {
@@ -64,6 +67,22 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
 
     @BindView(R.id.fabAddTweet)
     FloatingActionButton fabAddTweet;
+
+    private JsonHttpResponseHandler getUserHandler = new JsonHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            Log.d("DEBUG", response.toString());
+            TwitterApplication.setAccountUser(User.fromJSON(response));
+
+            showAddTweetFragment();
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Log.d("DEBUG", throwable.toString());
+
+        }
+    };
 
 
     @Override
@@ -120,18 +139,29 @@ public class TimelineFragment extends Fragment implements AddNewTweetDialog.AddT
                 android.R.color.holo_red_light);
 
 
-        client = TwitterApplication.getRestClient(); //singleton client
+        client = getRestClient(); //singleton client
 
         fabAddTweet.setOnClickListener(v -> {
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            AddNewTweetDialog addDialog = AddNewTweetDialog.newInstance();
-            addDialog.show(fm, "fragment_filter_dialog");
+
+            if (TwitterApplication.getAccountUser() == null) {
+                getRestClient().getUserInfo(getUserHandler);
+            } else {
+                showAddTweetFragment();
+            }
+
+
         });
 
 
         populateTimeline(WorkMode.INIT);
 
         return view;
+    }
+
+    private void showAddTweetFragment() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        AddNewTweetDialog addDialog = AddNewTweetDialog.newInstance();
+        addDialog.show(fm, "fragment_filter_dialog");
     }
 
 

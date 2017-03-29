@@ -2,18 +2,12 @@ package com.codepath.apps.simpletweets;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.codepath.apps.simpletweets.models.User;
 import com.facebook.stetho.Stetho;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
-
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -46,29 +40,9 @@ public class TwitterApplication extends Application {
         return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TwitterApplication.context);
     }
 
-    public static void setAccountUser() {
 
-        //Set accountUser if it hasn't been set yet
-        if (accountUser == null) {
-            JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Log.d("DEBUG", response.toString());
-                    accountUser = User.fromJSON(response);
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.d("DEBUG", throwable.toString());
-
-                }
-            };
-
-            getRestClient().getUserInfo(handler);
-
-        }
-
+    public static void setAccountUser(User user) {
+        accountUser = user;
     }
 
     public static User getAccountUser() {
