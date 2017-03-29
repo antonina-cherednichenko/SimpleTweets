@@ -42,10 +42,7 @@ public class UserDetailActivity extends AppCompatActivity {
                 Log.d("DEBUG", response.toString());
                 TwitterApplication.setAccountUser(User.fromJSON(response));
 
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE));
-                ft.commit();
-
+                setUserTweetsFragment();
             }
 
             @Override
@@ -58,12 +55,12 @@ public class UserDetailActivity extends AppCompatActivity {
         if (TwitterApplication.getAccountUser() == null) {
             getRestClient().getUserInfo(getAccountUserHandler);
         } else {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE));
-            ft.commit();
+            setUserTweetsFragment();
         }
 
+    }
 
+    private void setUserTweetsFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE));
         ft.commit();
