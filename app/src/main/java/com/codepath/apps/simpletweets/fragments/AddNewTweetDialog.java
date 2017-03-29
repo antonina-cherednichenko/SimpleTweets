@@ -101,12 +101,13 @@ public class AddNewTweetDialog extends DialogFragment {
         tilTweet.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int count, int after) {
-                if (text.length() > 0 && text.length() >= TWEET_MAX_LENGTH) {
+                if (text.length() >= TWEET_MAX_LENGTH) {
                     tilTweet.setError(getString(R.string.too_long_tweet_error));
                     tilTweet.setErrorEnabled(true);
                     btnAdd.setEnabled(false);
                 } else {
                     tilTweet.setErrorEnabled(false);
+                    btnAdd.setEnabled(true);
                 }
                 tilTweet.setHint(String.format("%d characters are left ", TWEET_MAX_LENGTH - text.length()));
             }
