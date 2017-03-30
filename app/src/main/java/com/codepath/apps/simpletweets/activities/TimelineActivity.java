@@ -23,6 +23,7 @@ import com.codepath.apps.simpletweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,23 +49,6 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
     private TwitterClient client;
 
 
-    private JsonHttpResponseHandler getAccountUserHandler = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("DEBUG", response.toString());
-            TwitterApplication.setAccountUser(User.fromJSON(response));
-
-            showAddTweetFragment();
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.d("DEBUG", throwable.toString());
-
-        }
-    };
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +69,7 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
         fabAddTweet.setOnClickListener(v -> {
 
             if (TwitterApplication.getAccountUser() == null) {
-                getRestClient().getUserInfo(getAccountUserHandler);
+                getRestClient().getUserInfo(getAccountUserHandler(() -> showAddTweetFragment()));
             } else {
                 showAddTweetFragment();
             }
@@ -116,12 +100,45 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
     }
 
+    private interface OnAccountUserSetListener {
+        void runAfterUserSet();
+    }
+
+    private JsonHttpResponseHandler getAccountUserHandler(OnAccountUserSetListener listener) {
+        return new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("DEBUG", response.toString());
+                TwitterApplication.setAccountUser(User.fromJSON(response));
+
+                listener.runAfterUserSet();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", throwable.toString());
+
+            }
+        };
+
+    }
+
+
+    private void startAccountUserDetailActivity() {
+        Intent intent = new Intent(TimelineActivity.this, UserDetailActivity.class);
+        intent.putExtra(UserDetailActivity.ARG_USER, Parcels.wrap(TwitterApplication.getAccountUser()));
+        startActivity(intent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_view_user:
-                Intent intent = new Intent(TimelineActivity.this, UserDetailActivity.class);
-                startActivity(intent);
+                if (TwitterApplication.getAccountUser() == null) {
+                    getRestClient().getUserInfo(getAccountUserHandler(() -> startAccountUserDetailActivity()));
+                } else {
+                    startAccountUserDetailActivity();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

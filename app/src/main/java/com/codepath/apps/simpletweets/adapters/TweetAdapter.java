@@ -103,6 +103,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
             });
 
+            ivProfileImage.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                Tweet tweet = tweets.get(position);
+
+
+
+            });
+
 
         }
     }
