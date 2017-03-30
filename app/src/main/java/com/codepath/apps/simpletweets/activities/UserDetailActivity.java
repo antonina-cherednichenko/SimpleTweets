@@ -62,7 +62,8 @@ public class UserDetailActivity extends AppCompatActivity {
 
     private void setUserTweetsFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE));
+        User accountUser = TwitterApplication.getAccountUser();
+        ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE, accountUser));
         ft.commit();
     }
 }

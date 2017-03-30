@@ -17,6 +17,7 @@ import com.codepath.apps.simpletweets.adapters.TweetAdapter;
 import com.codepath.apps.simpletweets.db.TwitterDatabase;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.models.Tweet_Table;
+import com.codepath.apps.simpletweets.models.User;
 import com.codepath.apps.simpletweets.utils.EndlessRecyclerViewScrollListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
@@ -27,6 +28,7 @@ import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,7 @@ public class TweetsFragment extends Fragment {
     }
 
     public static final String ARG_MODE = "ARG_MODE";
+    public static final String ARG_USER = "ARG_USER";
     private FragmentMode fragmentMode;
 
     private TwitterClient client;
@@ -60,6 +63,8 @@ public class TweetsFragment extends Fragment {
     private List<Tweet> tweets;
     private long maxId = 1;
     private long sinceId = 1;
+
+    private User user;
 
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
@@ -82,11 +87,25 @@ public class TweetsFragment extends Fragment {
         return fragment;
     }
 
+    public static TweetsFragment newInstance(FragmentMode mode, User user) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_MODE, mode);
+        args.putParcelable(ARG_USER, Parcels.wrap(user));
+
+
+        TweetsFragment fragment = new TweetsFragment();
+        fragment.setArguments(args);
+        return fragment;
+
+
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fragmentMode = (FragmentMode) getArguments().getSerializable(ARG_MODE);
+        user = Parcels.unwrap(getArguments().getParcelable(ARG_USER));
     }
 
     @Override
@@ -151,9 +170,9 @@ public class TweetsFragment extends Fragment {
                             from(Tweet.class).where(Tweet_Table.isMention.is(true)).orderBy(Tweet_Table.uid, false).queryList();
                     break;
                 case USER_TIMELINE:
-                    if (TwitterApplication.getAccountUser() != null) {
+                    if (user != null) {
                         tweets = SQLite.select().
-                                from(Tweet.class).where(Tweet_Table.user_uid.is(TwitterApplication.getAccountUser().getUid())).orderBy(Tweet_Table.uid, false).queryList();
+                                from(Tweet.class).where(Tweet_Table.user_uid.is(user.getUid())).orderBy(Tweet_Table.uid, false).queryList();
                     } else {
                         tweets = new ArrayList<>();
                     }
@@ -237,7 +256,7 @@ public class TweetsFragment extends Fragment {
                 client.getMentions(maxIdVal, sinceIdVal, handler);
                 break;
             case USER_TIMELINE:
-                client.getUserTimeline(maxIdVal, sinceIdVal, handler);
+                client.getUserTimeline(user.getUid(), user.getScreenName(), maxIdVal, sinceIdVal, handler);
                 break;
         }
 
