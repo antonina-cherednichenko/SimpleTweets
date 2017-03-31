@@ -27,6 +27,18 @@ public class User extends BaseModel {
     @Column
     String profileUrl;
 
+    @Column
+    String tagline;
+
+    @Column
+    int followers;
+
+    @Column
+    int following;
+
+    @Column
+    String profileBannerUrl;
+
     public String getName() {
         return name;
     }
@@ -43,13 +55,33 @@ public class User extends BaseModel {
         return uid;
     }
 
+    public int getFollowers() {
+        return followers;
+    }
+
+    public int getFollowing() {
+        return following;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public String getProfileBannerUrl() {
+        return profileBannerUrl;
+    }
+
     public static User fromJSON(JSONObject json) {
         User user = new User();
         try {
             user.name = json.getString("name");
             user.uid = json.getLong("id");
             user.screenName = json.getString("screen_name");
-            user.profileUrl = json.getString("profile_image_url");
+            user.profileUrl = json.getString("profile_image_url_https");
+            user.followers = json.getInt("followers_count");
+            user.following = json.getInt("friends_count");
+            user.tagline = json.getString("description");
+            user.profileBannerUrl = json.getString("profile_banner_url");
         } catch (JSONException e) {
             e.printStackTrace();
         }

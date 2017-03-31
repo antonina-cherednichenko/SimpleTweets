@@ -69,7 +69,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
                     .fitCenter().into(holder.ivBodyImage);
         }
 
-        Glide.with(context).load(tweet.getUser().getProfileUrl()).into(holder.ivProfileImage);
+        Glide.with(context).load(tweet.getUser().getProfileUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
+                .fitCenter().into(holder.ivProfileImage);
     }
 
 
