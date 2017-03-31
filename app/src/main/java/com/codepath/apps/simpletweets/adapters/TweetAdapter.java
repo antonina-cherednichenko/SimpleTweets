@@ -66,7 +66,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
             Glide.with(context).load(tweetMedia.getMediaUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .fitCenter().into(holder.ivBodyImage);
         }
-        
+
     }
 
 
