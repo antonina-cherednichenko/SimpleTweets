@@ -106,8 +106,12 @@ public class Tweet extends BaseModel {
     }
 
     public static List<Tweet> getUniqueTweets(List<Tweet> oldTweets, List<Tweet> newTweets) {
+        if (oldTweets.isEmpty()) {
+            return newTweets;
+        }
 
         List<Tweet> res = new ArrayList<>();
+
         for (Tweet tweet : newTweets) {
             if (!oldTweets.contains(tweet)) {
                 res.add(tweet);

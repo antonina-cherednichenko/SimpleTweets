@@ -27,6 +27,7 @@ import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModel
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
@@ -45,7 +46,8 @@ public class TweetsFragment extends Fragment {
     public enum FragmentMode {
         TIMELINE,
         MENTIONS,
-        USER_TIMELINE
+        USER_TIMELINE,
+        SEARCH
     }
 
     private enum WorkMode {
@@ -56,6 +58,8 @@ public class TweetsFragment extends Fragment {
 
     public static final String ARG_MODE = "ARG_MODE";
     public static final String ARG_USER = "ARG_USER";
+    public static final String ARG_QUERY = "ARG_QUERY";
+
     private FragmentMode fragmentMode;
 
     private TwitterClient client;
@@ -65,6 +69,7 @@ public class TweetsFragment extends Fragment {
     private long sinceId = 1;
 
     private User user;
+    private String query;
 
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
@@ -96,8 +101,17 @@ public class TweetsFragment extends Fragment {
         TweetsFragment fragment = new TweetsFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static TweetsFragment newInstance(FragmentMode mode, String query) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_MODE, mode);
+        args.putString(ARG_QUERY, query);
 
 
+        TweetsFragment fragment = new TweetsFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
@@ -106,6 +120,7 @@ public class TweetsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         fragmentMode = (FragmentMode) getArguments().getSerializable(ARG_MODE);
         user = Parcels.unwrap(getArguments().getParcelable(ARG_USER));
+        query = getArguments().getString(ARG_QUERY);
     }
 
     @Override
@@ -178,6 +193,9 @@ public class TweetsFragment extends Fragment {
                     }
 
                     break;
+                case SEARCH:
+                    tweets = new ArrayList<>();
+                    break;
             }
         } else {
             tweets = new ArrayList<>();
@@ -200,6 +218,20 @@ public class TweetsFragment extends Fragment {
         }
 
         JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    List<Tweet> newRes = Tweet.fromJSONArray(response.getJSONArray("statuses"));
+                    List<Tweet> newUniqueMentions = Tweet.getUniqueTweets(tweets, newRes);
+                    tweets.addAll(0, newUniqueMentions);
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 List<Tweet> newRes = Tweet.fromJSONArray(response, fragmentMode == FragmentMode.MENTIONS);
@@ -244,8 +276,8 @@ public class TweetsFragment extends Fragment {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("DEBUG", throwable.toString());
                 swipeContainer.setRefreshing(false);
-
             }
+
         };
 
         switch (fragmentMode) {
@@ -257,6 +289,9 @@ public class TweetsFragment extends Fragment {
                 break;
             case USER_TIMELINE:
                 client.getUserTimeline(user.getUid(), user.getScreenName(), maxIdVal, sinceIdVal, handler);
+                break;
+            case SEARCH:
+                client.getSearchTweets(query, handler);
                 break;
         }
 
