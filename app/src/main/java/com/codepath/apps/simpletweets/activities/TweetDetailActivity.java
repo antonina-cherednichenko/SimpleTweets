@@ -77,7 +77,7 @@ public class TweetDetailActivity extends AppCompatActivity {
             Glide.with(this).load(tweetMedia.getMediaUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .fitCenter().into(ivBodyImage);
         } else {
-            ivBodyImage.setImageResource(0);
+            ivBodyImage.setImageDrawable(null);
         }
 
 

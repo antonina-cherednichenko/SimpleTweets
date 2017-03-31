@@ -10,4 +10,6 @@
 
     <dimen name="simple_radius">6dp</dimen>
 
+    <dimen name="collapsable_toolbar_size">320dp</dimen>
+
 </resources>

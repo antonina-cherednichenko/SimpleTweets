@@ -93,10 +93,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     JsonHttpResponseHandler replyRetweetHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Tweet newTweet = Tweet.fromJSON(response, false);
+            //Tweet newTweet = Tweet.fromJSON(response, false);
 
-            tweets.add(0, newTweet);
-            notifyDataSetChanged();
+            //tweets.add(0, newTweet);
+            //notifyDataSetChanged();
 
         }
 
