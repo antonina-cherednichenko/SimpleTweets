@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.activities.TweetDetailActivity;
+import com.codepath.apps.simpletweets.activities.UserDetailActivity;
 import com.codepath.apps.simpletweets.models.Media;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
@@ -107,7 +108,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
                 int position = getAdapterPosition();
                 Tweet tweet = tweets.get(position);
 
-
+                Intent intent = new Intent(context, UserDetailActivity.class);
+                intent.putExtra(UserDetailActivity.ARG_USER, Parcels.wrap(tweet.getUser()));
+                context.startActivity(intent);
 
             });
 

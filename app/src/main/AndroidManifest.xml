@@ -45,7 +45,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codepath.apps.simpletweets.activities.TimelineActivity" />
         </activity>
-        <activity android:name=".activities.UserDetailActivity"></activity>
+        <activity
+            android:name=".activities.UserDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.codepath.apps.simpletweets.activities.TimelineActivity" />
+        </activity>
     </application>
 
 </manifest>
