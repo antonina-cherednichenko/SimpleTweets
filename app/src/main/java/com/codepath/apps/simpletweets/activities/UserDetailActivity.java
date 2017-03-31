@@ -80,7 +80,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
-        // getSupportActionBar().setTitle(user.getScreenName());
+        getSupportActionBar().setTitle(user.getScreenName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
