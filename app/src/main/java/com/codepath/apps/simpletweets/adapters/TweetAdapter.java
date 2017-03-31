@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -127,9 +127,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         @BindView(R.id.ivBodyImage)
         ImageView ivBodyImage;
         @BindView(R.id.btnReply)
-        Button btnReply;
+        ImageButton btnReply;
         @BindView(R.id.btnRetweet)
-        Button btnRetweet;
+        ImageButton btnRetweet;
 
 
         public TweetViewHolder(View itemView) {

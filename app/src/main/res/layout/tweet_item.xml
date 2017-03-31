@@ -59,25 +59,27 @@
         android:layout_margin="@dimen/simple_margin"
         android:layout_toRightOf="@id/ivProfileImage" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnReply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivBodyImage"
-        android:layout_toRightOf="@id/ivProfileImage"
         android:layout_alignParentBottom="true"
+        android:layout_below="@id/ivBodyImage"
         android:layout_margin="@dimen/simple_margin"
-        android:text="REPLY" />
+        android:layout_toRightOf="@id/ivProfileImage"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_reply" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnRetweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivBodyImage"
         android:layout_alignParentBottom="true"
+        android:layout_below="@id/ivBodyImage"
         android:layout_margin="@dimen/simple_margin"
         android:layout_toRightOf="@id/btnReply"
-        android:text="RETWEET" />
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_twitter_retweet" />
 
 
 </RelativeLayout>
