@@ -28,6 +28,7 @@ import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.utils.PatternEditableBuilder;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -84,8 +85,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         Media tweetMedia = tweet.getMedia();
 
         if (tweetMedia != null && tweetMedia.getType().equals("photo")) {
-            Glide.with(context).load(tweetMedia.getMediaUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .fitCenter().into(holder.ivBodyImage);
+            int displayWidth = context.getResources().getDisplayMetrics().widthPixels;
+            Picasso.with(context).load(tweetMedia.getMediaUrl()).resize(displayWidth, 0)
+                    .into(holder.ivBodyImage);
         }
 
     }
@@ -93,10 +95,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     JsonHttpResponseHandler replyRetweetHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            //Tweet newTweet = Tweet.fromJSON(response, false);
-
-            //tweets.add(0, newTweet);
-            //notifyDataSetChanged();
+            Tweet newTweet = Tweet.fromJSON(response, false);
+            tweets.add(0, newTweet);
+            notifyDataSetChanged();
 
         }
 
