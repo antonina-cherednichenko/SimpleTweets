@@ -28,6 +28,9 @@ public class AddNewTweetDialog extends DialogFragment {
 
     private static final int TWEET_MAX_LENGTH = 140;
 
+    private final static String EXTRA_ID = "tweet_id";
+    private Long tweetId = null;
+
     @BindView(R.id.etBody)
     EditText tvBody;
 
@@ -47,7 +50,7 @@ public class AddNewTweetDialog extends DialogFragment {
     TextInputLayout tilTweet;
 
     public interface AddTweetListener {
-        void addTweet(String tweetBody);
+        void addTweet(String tweetBody, Long tweetId);
     }
 
 
@@ -57,6 +60,14 @@ public class AddNewTweetDialog extends DialogFragment {
 
     public static AddNewTweetDialog newInstance() {
         AddNewTweetDialog dialog = new AddNewTweetDialog();
+        return dialog;
+    }
+
+    public static AddNewTweetDialog newInstance(long tweetId) {
+        AddNewTweetDialog dialog = new AddNewTweetDialog();
+        Bundle args = new Bundle();
+        args.putLong(EXTRA_ID, tweetId);
+        dialog.setArguments(args);
         return dialog;
     }
 
@@ -77,10 +88,12 @@ public class AddNewTweetDialog extends DialogFragment {
 
         User accountUser = TwitterApplication.getAccountUser();
 
+        tweetId = getArguments().getLong(EXTRA_ID);
+
         btnAdd.setOnClickListener(v -> {
 
             AddTweetListener listener = (AddTweetListener) getActivity();
-            listener.addTweet(tvBody.getText().toString());
+            listener.addTweet(tvBody.getText().toString(), tweetId);
             dismiss();
         });
 

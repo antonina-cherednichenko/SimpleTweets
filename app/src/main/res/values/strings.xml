@@ -10,4 +10,8 @@
 
     <string name="too_long_tweet_error">Too long tweet, limit it to 140 symbols</string>
 
+    <string name="followers">FOLLOWERS</string>
+
+    <string name="following">FOLLOWINGS</string>
+
 </resources>

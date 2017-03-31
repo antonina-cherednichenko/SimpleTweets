@@ -182,7 +182,7 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
 
     @Override
-    public void addTweet(String tweetBody) {
+    public void addTweet(String tweetBody, Long tweetId) {
         client.addNewTweet(tweetBody, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

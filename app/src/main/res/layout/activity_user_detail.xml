@@ -76,7 +76,7 @@
                     android:layout_below="@id/tvTagline"
                     android:layout_margin="@dimen/simple_margin"
                     android:layout_toRightOf="@id/tvFollowersCount"
-                    android:text="Followers"
+                    android:text="@string/followers"
                     android:textColor="@android:color/darker_gray" />
 
                 <TextView
@@ -96,7 +96,7 @@
                     android:layout_below="@id/tvTagline"
                     android:layout_margin="@dimen/simple_margin"
                     android:layout_toRightOf="@id/tvFollowingCount"
-                    android:text="Following"
+                    android:text="@string/following"
                     android:textColor="@android:color/darker_gray" />
 
             </RelativeLayout>

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,18 +14,23 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
+import com.codepath.apps.simpletweets.TwitterApplication;
+import com.codepath.apps.simpletweets.fragments.AddNewTweetDialog;
 import com.codepath.apps.simpletweets.fragments.TweetsFragment;
 import com.codepath.apps.simpletweets.models.User;
 import com.codepath.apps.simpletweets.utils.PatternEditableBuilder;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 
-public class UserDetailActivity extends AppCompatActivity {
+public class UserDetailActivity extends AppCompatActivity implements AddNewTweetDialog.AddTweetListener {
 
 //    @BindView(R.id.flTweets)
 //    FrameLayout tweets;
@@ -84,8 +90,6 @@ public class UserDetailActivity extends AppCompatActivity {
         ft.commit();
 
 
-
-
         setupToolbar();
 
     }
@@ -108,4 +112,19 @@ public class UserDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void addTweet(String tweetBody, Long tweetId) {
+        JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("ERROR", errorResponse.toString());
+            }
+        };
+        TwitterApplication.getRestClient().replyTweet(tweetId, tweetBody, handler);
+    }
 }
