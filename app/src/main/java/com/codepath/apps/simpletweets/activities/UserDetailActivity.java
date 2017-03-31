@@ -71,8 +71,7 @@ public class UserDetailActivity extends AppCompatActivity {
                 .fitCenter().into(ivProfileBackground);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        TweetsFragment fragment = TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE, user);
-        ft.replace(R.id.flTweets, fragment);
+        ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE, user));
         ft.commit();
 
         setupToolbar();

@@ -55,7 +55,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         holder.tvUserScreenName.setText(String.format("@%s", tweet.getUser().getScreenName()));
         holder.tvBody.setText(tweet.getBody());
         holder.tvTimestamp.setText(TimestampUtils.getRelativeTimeAgo(tweet.getCreateAt()));
-        holder.ivBodyImage.setImageResource(0);
+        holder.ivBodyImage.setImageDrawable(null);
 
         Glide.with(context).load(tweet.getUser().getProfileUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fitCenter().into(holder.ivProfileImage);
@@ -66,8 +66,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
             Glide.with(context).load(tweetMedia.getMediaUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .fitCenter().into(holder.ivBodyImage);
         }
-
-
+        
     }
 
 
