@@ -1,5 +1,6 @@
 package com.codepath.apps.simpletweets.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
@@ -14,8 +15,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.fragments.TweetsFragment;
 import com.codepath.apps.simpletweets.models.User;
+import com.codepath.apps.simpletweets.utils.PatternEditableBuilder;
 
 import org.parceler.Parcels;
+
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +70,11 @@ public class UserDetailActivity extends AppCompatActivity {
         tvUserName.setText(user.getName());
         tvScreenName.setText(user.getScreenName());
         tvTagLine.setText(user.getTagline());
+        new PatternEditableBuilder().
+                addPattern(Pattern.compile("\\@(\\w+)"), Color.BLUE,
+                        text -> {
+                        }).addPattern(Pattern.compile("\\#(\\w+)"), Color.BLUE, text -> {
+        }).into(tvTagLine);
 
         Glide.with(this).load(user.getProfileBannerUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fitCenter().into(ivProfileBackground);
@@ -73,6 +82,9 @@ public class UserDetailActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE, user));
         ft.commit();
+
+
+
 
         setupToolbar();
 

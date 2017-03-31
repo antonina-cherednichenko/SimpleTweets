@@ -1,6 +1,7 @@
 package com.codepath.apps.simpletweets.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.models.Media;
 import com.codepath.apps.simpletweets.models.Tweet;
+import com.codepath.apps.simpletweets.utils.PatternEditableBuilder;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
 
 import org.parceler.Parcels;
+
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +61,12 @@ public class TweetDetailActivity extends AppCompatActivity {
 
         Glide.with(this).load(tweet.getUser().getProfileUrl()).into(ivProfileImage);
         tvBody.setText(tweet.getBody());
+        new PatternEditableBuilder().
+                addPattern(Pattern.compile("\\@(\\w+)"), Color.BLUE,
+                        text -> {
+                        }).addPattern(Pattern.compile("\\#(\\w+)"), Color.BLUE, text -> {
+        }).into(tvBody);
+
         tvUserName.setText(tweet.getUser().getName());
         tvUserScreenName.setText(tweet.getUser().getScreenName());
         tvTimestamp.setText(TimestampUtils.getRelativeTimeAgo(tweet.getCreateAt()));
@@ -69,6 +79,7 @@ public class TweetDetailActivity extends AppCompatActivity {
         } else {
             ivBodyImage.setImageResource(0);
         }
+
 
     }
 

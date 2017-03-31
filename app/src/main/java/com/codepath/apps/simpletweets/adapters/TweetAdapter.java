@@ -3,6 +3,7 @@ package com.codepath.apps.simpletweets.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,13 @@ import com.codepath.apps.simpletweets.activities.TweetDetailActivity;
 import com.codepath.apps.simpletweets.activities.UserDetailActivity;
 import com.codepath.apps.simpletweets.models.Media;
 import com.codepath.apps.simpletweets.models.Tweet;
+import com.codepath.apps.simpletweets.utils.PatternEditableBuilder;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
 
 import org.parceler.Parcels;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +57,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         holder.tvUserName.setText(tweet.getUser().getName());
         holder.tvUserScreenName.setText(String.format("@%s", tweet.getUser().getScreenName()));
         holder.tvBody.setText(tweet.getBody());
+        new PatternEditableBuilder().
+                addPattern(Pattern.compile("\\@(\\w+)"), Color.BLUE,
+                        text -> {
+                        }).addPattern(Pattern.compile("\\#(\\w+)"), Color.BLUE, text -> {
+        }).into(holder.tvBody);
         holder.tvTimestamp.setText(TimestampUtils.getRelativeTimeAgo(tweet.getCreateAt()));
+
         holder.ivBodyImage.setImageDrawable(null);
 
         Glide.with(context).load(tweet.getUser().getProfileUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
