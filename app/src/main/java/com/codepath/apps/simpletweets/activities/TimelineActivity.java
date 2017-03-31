@@ -77,7 +77,7 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
         });
 
 
-        setupToolbar(getString(R.string.app_name));
+        setupToolbar("");
     }
 
     private void showAddTweetFragment() {
@@ -89,6 +89,7 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
     private void setupToolbar(String title) {
         setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.ic_twitter);
         getSupportActionBar().setTitle(title);
 
     }
