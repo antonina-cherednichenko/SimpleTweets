@@ -71,7 +71,8 @@ public class UserDetailActivity extends AppCompatActivity {
                 .fitCenter().into(ivProfileBackground);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE, user));
+        TweetsFragment fragment = TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE, user);
+        ft.replace(R.id.flTweets, fragment);
         ft.commit();
 
         setupToolbar();
@@ -80,7 +81,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
-       // getSupportActionBar().setTitle(user.getScreenName());
+        // getSupportActionBar().setTitle(user.getScreenName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
