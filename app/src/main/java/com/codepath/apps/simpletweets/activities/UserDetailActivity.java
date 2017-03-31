@@ -11,8 +11,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.TwitterApplication;
 import com.codepath.apps.simpletweets.fragments.AddNewTweetDialog;
@@ -20,6 +18,7 @@ import com.codepath.apps.simpletweets.fragments.TweetsFragment;
 import com.codepath.apps.simpletweets.models.User;
 import com.codepath.apps.simpletweets.utils.PatternEditableBuilder;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -82,8 +81,9 @@ public class UserDetailActivity extends AppCompatActivity implements AddNewTweet
                         }).addPattern(Pattern.compile("\\#(\\w+)"), Color.BLUE, text -> {
         }).into(tvTagLine);
 
-        Glide.with(this).load(user.getProfileBannerUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
-                .fitCenter().into(ivProfileBackground);
+        int displayWidth = getResources().getDisplayMetrics().widthPixels;
+        Picasso.with(this).load(user.getProfileBannerUrl()).resize(displayWidth, 0)
+                .into(ivProfileBackground);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.flTweets, TweetsFragment.newInstance(TweetsFragment.FragmentMode.USER_TIMELINE, user));

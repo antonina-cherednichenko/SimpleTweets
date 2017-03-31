@@ -57,6 +57,9 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
         setContentView(R.layout.activity_timeline);
         ButterKnife.bind(this);
 
+        setupToolbar("");
+
+
         client = TwitterApplication.getRestClient(); //singleton client
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
@@ -78,8 +81,6 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
 
         });
 
-
-        setupToolbar("");
     }
 
     private void showAddTweetFragment() {

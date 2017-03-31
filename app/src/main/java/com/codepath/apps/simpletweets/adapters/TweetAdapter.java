@@ -15,8 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.TwitterApplication;
 import com.codepath.apps.simpletweets.TwitterClient;
@@ -39,6 +37,8 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
+
+import static com.squareup.picasso.Picasso.with;
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHolder> implements AddNewTweetDialog.AddTweetListener {
 
@@ -79,14 +79,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
         holder.ivBodyImage.setImageDrawable(null);
 
-        Glide.with(context).load(tweet.getUser().getProfileUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
-                .fitCenter().into(holder.ivProfileImage);
+        Picasso.with(context).load(tweet.getUser().getProfileUrl())
+                .into(holder.ivProfileImage);
 
         Media tweetMedia = tweet.getMedia();
 
         if (tweetMedia != null && tweetMedia.getType().equals("photo")) {
             int displayWidth = context.getResources().getDisplayMetrics().widthPixels;
-            Picasso.with(context).load(tweetMedia.getMediaUrl()).resize(displayWidth, 0)
+            with(context).load(tweetMedia.getMediaUrl()).resize(displayWidth, 0)
                     .into(holder.ivBodyImage);
         }
 

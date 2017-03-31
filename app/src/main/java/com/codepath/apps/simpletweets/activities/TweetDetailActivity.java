@@ -10,13 +10,12 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codepath.apps.simpletweets.R;
 import com.codepath.apps.simpletweets.models.Media;
 import com.codepath.apps.simpletweets.models.Tweet;
 import com.codepath.apps.simpletweets.utils.PatternEditableBuilder;
 import com.codepath.apps.simpletweets.utils.TimestampUtils;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
@@ -24,6 +23,8 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.squareup.picasso.Picasso.with;
 
 public class TweetDetailActivity extends AppCompatActivity {
 
@@ -59,7 +60,7 @@ public class TweetDetailActivity extends AppCompatActivity {
 
         setupToolbar(tweet.getUser().getName());
 
-        Glide.with(this).load(tweet.getUser().getProfileUrl()).into(ivProfileImage);
+        Picasso.with(this).load(tweet.getUser().getProfileUrl()).into(ivProfileImage);
         tvBody.setText(tweet.getBody());
         new PatternEditableBuilder().
                 addPattern(Pattern.compile("\\@(\\w+)"), Color.BLUE,
@@ -74,8 +75,9 @@ public class TweetDetailActivity extends AppCompatActivity {
         //Setup media files if applicable
         Media tweetMedia = tweet.getMedia();
         if (tweetMedia != null && tweetMedia.getType().equals("photo")) {
-            Glide.with(this).load(tweetMedia.getMediaUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .fitCenter().into(ivBodyImage);
+            int displayWidth = getResources().getDisplayMetrics().widthPixels;
+            with(this).load(tweetMedia.getMediaUrl()).resize(displayWidth, 0)
+                    .into(ivBodyImage);
         } else {
             ivBodyImage.setImageDrawable(null);
         }
