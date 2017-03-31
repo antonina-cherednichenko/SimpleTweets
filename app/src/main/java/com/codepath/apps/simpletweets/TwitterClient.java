@@ -1,6 +1,8 @@
 package com.codepath.apps.simpletweets;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -9,6 +11,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
+
+import java.io.IOException;
 
 /*
  * 
@@ -33,13 +37,21 @@ public class TwitterClient extends OAuthBaseClient {
     public static final int MENTIONS_COUNT = 50;
     public static final int USER_TWEETS_COUNT = 50;
 
+    private Context context;
+
     public TwitterClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
+
+        this.context = context;
     }
 
 
     //HomeTimeline - Gets the home timeline
     public void getHomeTimeline(Long maxId, Long sinceId, AsyncHttpResponseHandler handler) {
+        if (!isOnline() || !isNetworkAvailable()) {
+            return;
+        }
+
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         //Specify the parameters
         RequestParams params = new RequestParams();
@@ -56,6 +68,10 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     public void getMentions(Long maxId, Long sinceId, AsyncHttpResponseHandler handler) {
+        if (!isOnline() || !isNetworkAvailable()) {
+            return;
+        }
+
         String apiUrl = getApiUrl("statuses/mentions_timeline.json");
         //Specify the parameters
         RequestParams params = new RequestParams();
@@ -73,6 +89,9 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     public void getUserTimeline(Long uid, String screenName, Long maxId, Long sinceId, JsonHttpResponseHandler handler) {
+        if (!isOnline() || !isNetworkAvailable()) {
+            return;
+        }
 
         String apiUrl = getApiUrl("statuses/user_timeline.json");
         //Specify the parameters
@@ -94,6 +113,9 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     public void getUserInfo(AsyncHttpResponseHandler handler) {
+        if (!isOnline() || !isNetworkAvailable()) {
+            return;
+        }
         String apiUrl = getApiUrl("account/verify_credentials.json");
         //Specify the parameters
         RequestParams params = new RequestParams();
@@ -103,6 +125,9 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     public void addNewTweet(String tweetBody, AsyncHttpResponseHandler handler) {
+        if (!isOnline() || !isNetworkAvailable()) {
+            return;
+        }
         String apiUrl = getApiUrl("statuses/update.json");
         //Specify the parameters
         RequestParams params = new RequestParams();
@@ -114,6 +139,9 @@ public class TwitterClient extends OAuthBaseClient {
 
 
     public void getSearchTweets(String query, AsyncHttpResponseHandler handler) {
+        if (!isOnline() || !isNetworkAvailable()) {
+            return;
+        }
         String apiUrl = getApiUrl("search/tweets.json");
 
         RequestParams params = new RequestParams();
@@ -124,6 +152,9 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     public void retweetTweet(long tweetId, AsyncHttpResponseHandler handler) {
+        if (!isOnline() || !isNetworkAvailable()) {
+            return;
+        }
         String apiUrl = getApiUrl(String.format("statuses/retweet/%d.json", tweetId));
 
         //Specify the parameters
@@ -134,6 +165,9 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     public void replyTweet(long tweetId, String reply, AsyncHttpResponseHandler handler) {
+        if (!isOnline() || !isNetworkAvailable()) {
+            return;
+        }
         String apiUrl = getApiUrl("statuses/update.json");
         //Specify the parameters
         RequestParams params = new RequestParams();
@@ -142,6 +176,27 @@ public class TwitterClient extends OAuthBaseClient {
 
         getClient().post(apiUrl, params, handler);
 
+    }
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    private boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
