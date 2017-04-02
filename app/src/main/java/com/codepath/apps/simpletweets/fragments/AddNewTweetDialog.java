@@ -88,7 +88,10 @@ public class AddNewTweetDialog extends DialogFragment {
 
         User accountUser = TwitterApplication.getAccountUser();
 
-        tweetId = getArguments().getLong(EXTRA_ID);
+        if (getArguments() != null) {
+            tweetId = getArguments().getLong(EXTRA_ID);
+        }
+
 
         btnAdd.setOnClickListener(v -> {
 
