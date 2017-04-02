@@ -40,15 +40,17 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [X] Use ButterKnife library for data binding
+* [X] Use Java8 retro lambda expressions
+* [X] Style improvements with CardView
+* [X] Implement Collapsable toolbar for user page
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/antonina-cherednichenko/SimpleTweets/blob/master/twitter_video_part2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
