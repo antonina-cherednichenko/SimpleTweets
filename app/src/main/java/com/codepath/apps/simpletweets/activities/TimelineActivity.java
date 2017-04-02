@@ -189,8 +189,11 @@ public class TimelineActivity extends AppCompatActivity implements AddNewTweetDi
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Tweet newTweet = Tweet.fromJSON(response, false);
 
-                TweetsFragment fragment = (TweetsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 0);
-                fragment.addNewTweet(newTweet);
+                TweetsFragment fragment = (TweetsFragment) tabAdapter.getRegisteredFragment(0);
+                if (fragment != null) {
+                    fragment.addNewTweet(newTweet);
+                }
+
 
             }
 

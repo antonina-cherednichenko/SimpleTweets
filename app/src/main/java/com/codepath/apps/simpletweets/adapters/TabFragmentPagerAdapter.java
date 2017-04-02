@@ -4,11 +4,10 @@ package com.codepath.apps.simpletweets.adapters;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.codepath.apps.simpletweets.fragments.TweetsFragment;
 
-public class TabFragmentPagerAdapter extends FragmentStatePagerAdapter {
+public class TabFragmentPagerAdapter extends SmartFragmentStatePagerAdapter {
 
     final int PAGE_COUNT = 2;
     private String tabTitles[] = new String[]{"Timeline", "Mentions"};
